@@ -32,3 +32,27 @@ override.tf.json
 # Ignore CLI configuration files
 .terraformrc
 terraform.rc
+
+# Pulled from https://github.com/ChristianLempa/homelab/blob/2da8eb8c158f5377008a30c07cb6a8c0ccf3b117/.gitignore
+
+# .vscode/**
+# .obsidian
+# .obsidian/**
+# .DS_Store
+
+**/.envrc
+**/.env
+
+**/.terraform
+**/.terraform.lock.hcl
+**/.terraform.tfstate.*
+**/terraform.tfstate
+**/terraform.tfstate.backup
+**/*.auto.tfvars
+
+**/*.auto.pkrvars.hcl
+packer-*.log
+packer_cache/
+*.iso
+*.box
+*.ova
