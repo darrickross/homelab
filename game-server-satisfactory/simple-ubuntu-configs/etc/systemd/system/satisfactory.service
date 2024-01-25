@@ -1,0 +1,36 @@
+[Unit]
+Description=Satisfactory dedicated server
+Wants=network-online.target
+After=syslog.target network.target nss-lookup.target network-online.target
+
+[Service]
+# =========================================================
+# Environment Config
+# =========================================================
+User=satisfactory
+Group=satisfactory
+WorkingDirectory=/var/lib/satisfactory
+Environment="LD_LIBRARY_PATH=./linux64"
+
+# =========================================================
+# Logging
+# =========================================================
+# Make sure to implement logrotate!!!!!
+StandardOutput=append:/var/log/satisfactory/stdout.log
+StandardError=append:/var/log/satisfactory/stderr.err
+
+# =========================================================
+# Start/Stop/Restart
+# =========================================================
+Restart=on-failure
+
+# Before starting the main "service"
+# We install/validate the steam game
+ExecStartPre=/usr/games/steamcmd +force_install_dir "/var/lib/satisfactory" +login anonymous +app_update 1690800 validate +quit
+
+# Start the game server
+# Note '-multihome=0.0.0.0' has been needed to fix an IPv6 issue, we are fixing this by forcing the server to bind to just ipv4 addresses
+ExecStart=/var/lib/satisfactory/FactoryServer.sh -multihome=0.0.0.0 -ServerQueryPort=15777 -BeaconPort=15000 -Port=7777
+
+[Install]
+WantedBy=multi-user.target

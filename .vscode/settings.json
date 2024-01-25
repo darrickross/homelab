@@ -1,5 +1,15 @@
 {
     "cSpell.words": [
-        "HomeLab"
-    ]
+        "autoclean",
+        "autoremove",
+        "dateext",
+        "debconf",
+        "dpkg",
+        "HomeLab",
+        "journalctl",
+        "missingok",
+        "multihome",
+        "notifempty",
+        "steamcmd"
+    ],
 }
