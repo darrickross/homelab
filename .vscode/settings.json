@@ -12,4 +12,5 @@
         "notifempty",
         "steamcmd"
     ],
+    "files.eol": "\n",
 }
