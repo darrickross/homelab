@@ -1,5 +1,18 @@
 {
     "cSpell.words": [
-        "HomeLab"
-    ]
+        "autoclean",
+        "autoremove",
+        "dateext",
+        "debconf",
+        "dpkg",
+        "HomeLab",
+        "journalctl",
+        "missingok",
+        "multihome",
+        "Nixos",
+        "notifempty",
+        "patchelf",
+        "steamcmd"
+    ],
+    "files.eol": "\n",
 }

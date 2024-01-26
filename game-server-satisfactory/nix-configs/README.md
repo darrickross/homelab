@@ -1,0 +1,3 @@
+# Nixos Config
+
+WIP
