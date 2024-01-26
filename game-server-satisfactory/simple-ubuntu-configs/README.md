@@ -152,7 +152,9 @@ ports=$GAME_PORT_QUERY/udp|$GAME_PORT_BEACON/udp|$GAME_PORT_GAME/udp
 HEREDOC_UFW_APPLICATION
 
 # copy the file you just created to the ufw applications folder
-sudo mv $UFW_APPLICATION_PROFILE_FILE $UFW_APPLICATION_FOLDER
+sudo cp $UFW_APPLICATION_PROFILE_FILE $UFW_APPLICATION_FOLDER
+
+rm $UFW_APPLICATION_PROFILE_FILE
 ```
 
 > [!NOTE]
@@ -349,8 +351,10 @@ ExecStart=$SATISFACTORY_INSTALL_FOLDER/FactoryServer.sh -multihome=0.0.0.0 -Serv
 WantedBy=multi-user.target
 HEREDOC_GAME_SERVER_SERVICE
 
-# copy the file you just created to the systemd folder
-sudo mv $GAME_SERVER_SERVICE_FILE $SYSTEMD_SERVICE_FOLDER
+# copy the service unit you just created to the systemd folder
+sudo cp $GAME_SERVER_SERVICE_FILE $SYSTEMD_SERVICE_FOLDER
+
+rm $GAME_SERVER_SERVICE_FILE
 ```
 
 > [!NOTE]
@@ -505,8 +509,10 @@ $SATISFACTORY_LOG_FOLDER/*.log {
 }
 HEREDOC_LOGROTATE_CONFIG
 
-# copy the file you just created to the ufw applications folder
-sudo mv $SATISFACTORY_LOGROTATE_CONFIG_FILE $LOGROTATE_CONFIG_FOLDER
+# copy the file you just created to the logrotate config folder
+sudo cp $SATISFACTORY_LOGROTATE_CONFIG_FILE $LOGROTATE_CONFIG_FOLDER
+
+rm $SATISFACTORY_LOGROTATE_CONFIG_FILE
 ```
 
 > [!NOTE]
@@ -615,8 +621,10 @@ ExecStart=$SATISFACTORY_INSTALL_FOLDER/FactoryServer.sh -multihome=0.0.0.0 -Serv
 WantedBy=multi-user.target
 HEREDOC_GAME_SERVER_SERVICE
 
-# copy the file you just created to the systemd folder
-sudo mv $GAME_SERVER_SERVICE_FILE $SYSTEMD_SERVICE_FOLDER
+# copy the service unit you just created to the systemd folder
+sudo cp $GAME_SERVER_SERVICE_FILE $SYSTEMD_SERVICE_FOLDER
+
+rm $GAME_SERVER_SERVICE_FILE
 ```
 
 > [!NOTE]
