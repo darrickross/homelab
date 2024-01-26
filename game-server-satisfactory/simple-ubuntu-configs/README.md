@@ -718,12 +718,10 @@ echo "===================="
 echo "GAME SERVER INFO"
 
 # Show game server status
-printf "Satisfactory Server: "
-systemctl show -p SubState --value \$GAME_SERVER_SERVICE
+echo "Satisfactory Server: \$(systemctl show -p SubState --value \$GAME_SERVER_SERVICE)"
 
 # Show game server uptime/downtime
-printf "Since: "
-systemctl show --property=ActiveEnterTimestamp --value \$GAME_SERVER_SERVICE
+echo "Since: \$(systemctl show --property=ActiveEnterTimestamp --value \$GAME_SERVER_SERVICE)"
 
 echo "===================="
 HEREDOC_MOTD_SCRIPT
@@ -753,18 +751,20 @@ sudo cp $MOTD_FILE $MOTD_LOCATION
 > echo "GAME SERVER INFO"
 >
 > # Show game server status
-> printf "Satisfactory Server: "
-> systemctl show -p SubState --value $GAME_SERVER_SERVICE
+> echo "Satisfactory Server: $(systemctl show -p SubState --value $GAME_SERVER_SERVICE)"
 >
 > # Show game server uptime/downtime
-> printf "Since: "
-> systemctl show --property=ActiveEnterTimestamp --value $GAME_SERVER_SERVICE
+> echo "Since: $(systemctl show --property=ActiveEnterTimestamp --value $GAME_SERVER_SERVICE)"
 >
 > echo "===================="
 > ```
 
-Next time you log in you should see:
+Next time you log in you will see the following at the end just before your prompt:
 
 ```txt
-# TODO
+====================
+GAME SERVER INFO
+Satisfactory Server: running
+Since: Thu 2024-01-25 23:45:43 UTC
+====================
 ```
