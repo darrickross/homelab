@@ -2,7 +2,7 @@
 
 ## Local README Navigation
 
-- [../..](../../README.md)
+- [*root directory*](../../README.md)
 - [/game-server-satisfactory](../README.md)
   - [simple-ubuntu-configs/](./README.md)
     - A simple Ubuntu config and help document to install a Satisfactory server on Ubuntu

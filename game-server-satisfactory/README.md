@@ -4,7 +4,7 @@
 
 ## Local Folder Structure
 
-- [..](../README.md)
+- [*root directory*](../README.md)
 - [/game-server-satisfactory](./README.md)
   - [game-configs/](./game-configs/README.md)
     - Common Game Config Files and Settings
