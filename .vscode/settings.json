@@ -9,7 +9,9 @@
         "journalctl",
         "missingok",
         "multihome",
+        "Nixos",
         "notifempty",
+        "patchelf",
         "steamcmd"
     ],
     "files.eol": "\n",

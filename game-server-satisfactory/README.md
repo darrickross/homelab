@@ -8,6 +8,8 @@
 - [/game-server-satisfactory](./README.md)
   - [game-configs/](./game-configs/README.md)
     - Common Game Config Files and Settings
+  - [nix-configs/](./nix-configs/README.md)
+    - A NixOS configuration file for a Satisfactory Server
   - [simple-ubuntu-configs/](./simple-ubuntu-configs/README.md)
     - A simple Ubuntu config and help document to install a Satisfactory server on Ubuntu
 
