@@ -24,6 +24,11 @@ StandardError=append:/var/log/satisfactory/stderr.err
 # =========================================================
 Restart=on-failure
 
+# Steam takes the longest to start while doing validate
+# Depending on CPU speed/Disk Speed/Network this time may vary
+# I have seen that 3 minutes works, but you can increase this if the service does not start in the allotted time
+TimeoutStartSec=180
+
 # Before starting the main "service"
 # We install/validate the steam game
 ExecStartPre=/usr/games/steamcmd +force_install_dir "/var/lib/satisfactory" +login anonymous +app_update 1690800 validate +quit

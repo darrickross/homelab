@@ -332,6 +332,11 @@ Environment="LD_LIBRARY_PATH=./linux64"
 # =========================================================
 Restart=on-failure
 
+# Steam takes the longest to start while doing validate
+# Depending on CPU speed/Disk Speed/Network this time may vary
+# I have seen that 3 minutes works, but you can increase this if the service does not start in the allotted time
+TimeoutStartSec=180
+
 # Before starting the main "service"
 # We install/validate the steam game
 ExecStartPre=/usr/games/steamcmd +force_install_dir "$SATISFACTORY_INSTALL_FOLDER" +login anonymous +app_update 1690800 validate +quit
@@ -378,6 +383,11 @@ sudo mv $GAME_SERVER_SERVICE_FILE $SYSTEMD_SERVICE_FOLDER
 > # Start/Stop/Restart
 > # =========================================================
 > Restart=on-failure
+>
+> # Steam takes the longest to start while doing validate
+> # Depending on CPU speed/Disk Speed/Network this time may vary
+> # I have seen that 3 minutes works, but you can increase this if the service does not start in the allotted time
+> TimeoutStartSec=180
 >
 > # Before starting the main "service"
 > # We install/validate the steam game
@@ -578,6 +588,11 @@ StandardError=append:$SATISFACTORY_LOG_FOLDER/stderr.err
 # =========================================================
 Restart=on-failure
 
+# Steam takes the longest to start while doing validate
+# Depending on CPU speed/Disk Speed/Network this time may vary
+# I have seen that 3 minutes works, but you can increase this if the service does not start in the allotted time
+TimeoutStartSec=180
+
 # Before starting the main "service"
 # We install/validate the steam game
 ExecStartPre=/usr/games/steamcmd +force_install_dir "$SATISFACTORY_INSTALL_FOLDER" +login anonymous +app_update 1690800 validate +quit
@@ -631,6 +646,11 @@ sudo mv $GAME_SERVER_SERVICE_FILE $SYSTEMD_SERVICE_FOLDER
 > # Start/Stop/Restart
 > # =========================================================
 > Restart=on-failure
+>
+> # Steam takes the longest to start while doing validate
+> # Depending on CPU speed/Disk Speed/Network this time may vary
+> # I have seen that 3 minutes works, but you can increase this if the service does not start in the allotted time
+> TimeoutStartSec=180
 >
 > # Before starting the main "service"
 > # We install/validate the steam game
