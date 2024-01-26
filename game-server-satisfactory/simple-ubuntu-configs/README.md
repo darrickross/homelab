@@ -474,6 +474,12 @@ sudo touch $SATISFACTORY_LOG_FOLDER/$SATISFACTORY_LOG_STANDARD_ERROR
 sudo chown -R $GAME_USER:$GAME_USER $SATISFACTORY_LOG_FOLDER
 ```
 
+Check the permissions
+
+```bash
+sudo ls -al $SATISFACTORY_LOG_FOLDER
+```
+
 #### Create Logrotate Config File
 
 > [!TIP]
