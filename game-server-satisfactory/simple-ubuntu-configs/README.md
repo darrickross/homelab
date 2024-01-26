@@ -459,6 +459,8 @@ Adding Logging to a separate file helps to collect logs in a central place and w
 SATISFACTORY_LOG_FOLDER="/var/log/satisfactory"
 SATISFACTORY_LOGROTATE_CONFIG_FILE="satisfactory.conf"
 LOGROTATE_CONFIG_FOLDER="/etc/logrotate.d/"
+SATISFACTORY_LOG_STANDARD_OUT="stdout.log"
+SATISFACTORY_LOG_STANDARD_ERROR="stderr.log"
 ```
 
 #### Create Logging Directories
@@ -467,6 +469,8 @@ These steps are the same as above for creating the install directory
 
 ```bash
 sudo mkdir -p $SATISFACTORY_LOG_FOLDER
+sudo touch $SATISFACTORY_LOG_FOLDER/$SATISFACTORY_LOG_STANDARD_OUT
+sudo touch $SATISFACTORY_LOG_FOLDER/$SATISFACTORY_LOG_STANDARD_ERROR
 sudo chown -R $GAME_USER:$GAME_USER $SATISFACTORY_LOG_FOLDER
 ```
 
@@ -580,8 +584,8 @@ Environment="LD_LIBRARY_PATH=./linux64"
 # Logging
 # =========================================================
 # Make sure to implement logrotate!!!!!
-StandardOutput=append:$SATISFACTORY_LOG_FOLDER/stdout.log
-StandardError=append:$SATISFACTORY_LOG_FOLDER/stderr.err
+StandardOutput=append:$SATISFACTORY_LOG_FOLDER/$SATISFACTORY_LOG_STANDARD_OUT
+StandardError=append:$SATISFACTORY_LOG_FOLDER/$SATISFACTORY_LOG_STANDARD_ERROR
 
 # =========================================================
 # Start/Stop/Restart
@@ -640,7 +644,7 @@ sudo mv $GAME_SERVER_SERVICE_FILE $SYSTEMD_SERVICE_FOLDER
 > # =========================================================
 > # Make sure to implement logrotate!!!!!
 > StandardOutput=append:/var/log/satisfactory/stdout.log
-> StandardError=append:/var/log/satisfactory/stderr.err
+> StandardError=append:/var/log/satisfactory/stderr.log
 >
 > # =========================================================
 > # Start/Stop/Restart
