@@ -12,6 +12,11 @@
 > [!NOTE]
 > Last built on Ubuntu 23.10, using minimal server install
 
+### Expected Outputs
+
+> [!IMPORTANT]
+> Expected outputs are provided in [example-output.md](example-output.md)
+
 ## Requirements
 
 > [!IMPORTANT]
