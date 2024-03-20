@@ -17,3 +17,7 @@ This rant may move somewhere else, maybe a dedicated rants folder at the root.
       - `satisfactory.nix` - Core Nix config which sets up Satisfactory.
       - `system-configs.nix` - Core system configuration settings.
     - [simple-ubuntu-configs/](../simple-ubuntu-configs/README.md)
+
+## Attribution
+
+Initially I used the example [Valheim Server on NixOS v2](https://kevincox.ca/2022/12/09/valheim-server-nixos-v2/). But I have since branched from the initial guide as I slowly start to better understand NixOS.

@@ -13,7 +13,8 @@
         "Nixos",
         "notifempty",
         "patchelf",
-        "steamcmd"
+        "steamcmd",
+        "Valheim"
     ],
     "files.eol": "\n",
     "[markdown]": {
