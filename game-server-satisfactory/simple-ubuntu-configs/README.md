@@ -10,7 +10,7 @@ This directory represents an example of how to set up a Satisfactory server on a
 - [*root directory*](../../README.md)
   - [/game-server-satisfactory](../README.md)
     - [game-configs/](./game-configs/README.md)
-    - [nix-configs/](./nix-configs/README.md)
+    - [nix-configs/](../nix-configs/README.md)
     - [simple-ubuntu-configs/](./README.md) - ***YOU ARE HERE***
       - etc/
         - logrotate.d/
