@@ -7,6 +7,7 @@
         "cmds",
         "dateext",
         "debconf",
+        "delaycompress",
         "dpkg",
         "execer",
         "findutils",
@@ -20,6 +21,7 @@
         "pkgs",
         "resholve",
         "steamcmd",
+        "tmpfiles",
         "Valheim"
     ],
     "files.eol": "\n",
