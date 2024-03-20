@@ -26,6 +26,32 @@ Initially I used the example [Valheim Server on NixOS v2](https://kevincox.ca/20
 
 ### `example-secrets.nix`
 
+> [!IMPORTANT]
+> This is an example file and is not intended to be used. The real `secrets.nix` is added as a file to be ignored, and not included in source control.
+
+This is a file containing variables to be used in the other nix configs. They are all important variables like port numbers and ip addresses which are a security risk to distribute directly.
+
+```nix
+{
+    # System Networking config
+    system-hostname         = "satisfactory-prod";
+    system-ipv4-address     = "192.168.0.41";       # Replace with your static IP address
+    system-ipv4-prefix      = 24;
+    system-ipv4-gateway     = "192.168.0.1";        # Replace with your gateway IP address
+    system-ipv4-dns-list    = [
+        "192.168.0.4"
+        "192.168.0.1"
+    ];
+    system-ssh-port         = "22";
+
+    # Satisfactory Ports
+    server-game-port-udp    = "7777";
+    server-beacon-port-udp  = "15000";
+    server-query-port-udp   = "15777";
+}
+
+```
+
 ### `satisfactory.nix`
 
 ### `system-configs.nix`
