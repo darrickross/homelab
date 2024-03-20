@@ -23,6 +23,7 @@ This directory represents an example of how to set up a Satisfactory server on a
         - ufw/
           - applications.d/
             - `satisfactory-firewall.conf` - Satisfactory Game Server Firewall rule
+      - [`example-output.md`](example-output.md) - Example output from this guide.
 
 ## Note
 
