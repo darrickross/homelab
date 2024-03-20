@@ -1,4 +1,4 @@
-# Source: https://kevincox.ca/2022/12/09/valheim-server-nixos-v2/
+# Designed based on: https://kevincox.ca/2022/12/09/valheim-server-nixos-v2/
 
 # satisfactory.nix
 {config, pkgs, lib, ...}:
