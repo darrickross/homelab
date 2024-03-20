@@ -6,8 +6,6 @@
 
 - [*root directory*](../README.md)
   - [/game-server-satisfactory](./README.md) - ***YOU ARE HERE***
-    - [game-configs/](./game-configs/README.md)
-      - Common Game Config Files and Settings
     - [nix-configs/](./nix-configs/README.md)
       - A NixOS configuration file for a Satisfactory Server
     - [simple-ubuntu-configs/](./simple-ubuntu-configs/README.md)
