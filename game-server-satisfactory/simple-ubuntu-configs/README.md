@@ -1,15 +1,23 @@
 # Simple Ubuntu Satisfactory Server
 
-## Local README Navigation
+## Relative Folder Structure
 
 - [*root directory*](../../README.md)
-- [/game-server-satisfactory](../README.md)
-  - [game-configs/](./game-configs/README.md)
-    - Common Game Config Files and Settings
-  - [nix-configs/](./nix-configs/README.md)
-    - A NixOS configuration file for a Satisfactory Server
-  - [simple-ubuntu-configs/](./README.md)
-    - A simple Ubuntu config and help document to install a Satisfactory server on Ubuntu
+  - [/game-server-satisfactory](../README.md)
+    - [game-configs/](./game-configs/README.md)
+    - [nix-configs/](./nix-configs/README.md)
+    - [simple-ubuntu-configs/](./README.md) - ***YOU ARE HERE***
+      - etc/
+        - logrotate.d/
+          - `satisfactory.conf` - Log rotation config
+        - profile.d/
+          - `99-satisfactory.sh` - Simple Message of the Day
+        - systemd/
+          - system/
+            - `satisfactory.service` - Satisfactory systemd service.
+        - ufw/
+          - applications.d/
+            - `satisfactory-firewall.conf` - Satisfactory Game Server Firewall rule
 
 ## Note
 
