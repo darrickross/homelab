@@ -1,5 +1,10 @@
 # Simple Ubuntu Satisfactory Server
 
+This directory represents an example of how to set up a Satisfactory server on an Ubuntu system.
+
+> [!NOTE]
+> I have mostly dropped this manual method of hosting services in favor of Infrastructure as Code and Configuration Management. I have moved to running Satisfactory on NixOS as you can see in my Satisfactory [nix-configs](./nix-configs/README.md).
+
 ## Relative Folder Structure
 
 - [*root directory*](../../README.md)
