@@ -15,4 +15,8 @@
         "steamcmd"
     ],
     "files.eol": "\n",
+    "[markdown]": {
+        "editor.tabSize": 2,
+        "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+    },
 }
