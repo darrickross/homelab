@@ -21,3 +21,11 @@ This rant may move somewhere else, maybe a dedicated rants folder at the root.
 ## Attribution
 
 Initially I used the example [Valheim Server on NixOS v2](https://kevincox.ca/2022/12/09/valheim-server-nixos-v2/). But I have since branched from the initial guide as I slowly start to better understand NixOS.
+
+## Explaining Nix Config
+
+### `example-secrets.nix`
+
+### `satisfactory.nix`
+
+### `system-configs.nix`
