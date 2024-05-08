@@ -9,6 +9,7 @@
     "debconf",
     "delaycompress",
     "dpkg",
+    "drwxr",
     "execer",
     "findutils",
     "HomeLab",
