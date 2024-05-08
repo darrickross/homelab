@@ -162,6 +162,9 @@ sudo systemctl status satisfactory
 
 The `secrets.nix` and example version `example-secrets.nix` is used to configure important variables, which are potentially sensitive, aka the name *secrets*. This file is then imported into other nix configs. Allowing those nix config files to stay static, with the `secrets.nix` changing based on the systems networking configs.
 
+> [!CAUTION]
+> Ensure a file `secrets.nix` is created and includes the below config which is updated to match your network settings.
+
 ```nix
 {
     # System Networking config
