@@ -154,9 +154,16 @@ sudo systemctl status satisfactory
 ### `example-secrets.nix`
 
 > [!IMPORTANT]
-> This is an example file and is not intended to be used. The real `secrets.nix` is added as a file to be ignored, and not included in source control.
+> This is an example file and is not intended to be used.
+>
+> The file `secrets.nix` will contain sensitive values which are expected to be left out of source control. Therefore the file is not included in source control, nor included in this guide.
+>
+> Instead an example file `example-secrets.nix` is provided which contains example sensitive values.
 
-This is a file containing variables to be used in the other nix configs. They are all important variables like port numbers and ip addresses which are a security risk to distribute directly.
+The `secrets.nix` and example version `example-secrets.nix` is used to configure important variables, which are potentially sensitive, aka the name *secrets*. This file is then imported into other nix configs. Allowing those nix config files to stay static, with the `secrets.nix` changing based on the systems networking configs.
+
+> [!CAUTION]
+> Ensure a file `secrets.nix` is created and includes the below config which is updated to match your network settings.
 
 ```nix
 {
@@ -176,8 +183,10 @@ This is a file containing variables to be used in the other nix configs. They ar
     server-beacon-port-udp  = "15000";
     server-query-port-udp   = "15777";
 }
-
 ```
+
+> [!NOTE]
+> I have not looked into IPv6 as of writing. IPv6 is also still being implemented in satisfactory.
 
 ### `satisfactory.nix`
 

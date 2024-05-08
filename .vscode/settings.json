@@ -1,32 +1,33 @@
 {
-    "cSpell.words": [
-        "autoclean",
-        "automagically",
-        "autoremove",
-        "betapassword",
-        "cmds",
-        "dateext",
-        "debconf",
-        "delaycompress",
-        "dpkg",
-        "execer",
-        "findutils",
-        "HomeLab",
-        "journalctl",
-        "missingok",
-        "multihome",
-        "Nixos",
-        "notifempty",
-        "patchelf",
-        "pkgs",
-        "resholve",
-        "steamcmd",
-        "tmpfiles",
-        "Valheim"
-    ],
-    "files.eol": "\n",
-    "[markdown]": {
-        "editor.tabSize": 2,
-        "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
-    },
+  "cSpell.words": [
+    "autoclean",
+    "automagically",
+    "autoremove",
+    "betapassword",
+    "cmds",
+    "dateext",
+    "debconf",
+    "delaycompress",
+    "dpkg",
+    "drwxr",
+    "execer",
+    "findutils",
+    "HomeLab",
+    "journalctl",
+    "missingok",
+    "multihome",
+    "Nixos",
+    "notifempty",
+    "patchelf",
+    "pkgs",
+    "resholve",
+    "steamcmd",
+    "tmpfiles",
+    "Valheim"
+  ],
+  "files.eol": "\n",
+  "[markdown]": {
+    "editor.tabSize": 2,
+    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+  }
 }
