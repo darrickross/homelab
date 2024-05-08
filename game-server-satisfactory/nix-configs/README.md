@@ -183,8 +183,10 @@ The `secrets.nix` and example version `example-secrets.nix` is used to configure
     server-beacon-port-udp  = "15000";
     server-query-port-udp   = "15777";
 }
-
 ```
+
+> [!NOTE]
+> I have not looked into IPv6 as of writing. IPv6 is also still being implemented in satisfactory.
 
 ### `satisfactory.nix`
 
