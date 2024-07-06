@@ -30,6 +30,8 @@
   ],
   "files.eol": "\n",
   "[markdown]": {
+    "editor.detectIndentation": false,
+    "editor.insertSpaces": true,
     "editor.tabSize": 2,
     "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
   }
