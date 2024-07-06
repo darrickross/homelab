@@ -1,5 +1,6 @@
 {
   "cSpell.words": [
+    "ABSLOG",
     "autoclean",
     "automagically",
     "autoremove",
@@ -20,7 +21,9 @@
     "notifempty",
     "patchelf",
     "pkgs",
+    "Remappable",
     "resholve",
+    "saveddirsuffix",
     "steamcmd",
     "tmpfiles",
     "Valheim"
