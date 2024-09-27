@@ -45,7 +45,7 @@ After transferring these files to the NixOS system we will move them to the root
 Now that the 3 files exist in the root config directory `/etc/nixos/` like so:
 
 ```text
-[manager@satisfactory-prod:~]$ ls -al /etc/nixos/
+[manager@nixos:~]$ ls -al /etc/nixos/
 total 32
 drwxr-xr-x  2 root root 4096 Jan 21 21:40 .
 drwxr-xr-x 23 root root 4096 Mar 20 20:08 ..
@@ -55,7 +55,7 @@ drwxr-xr-x 23 root root 4096 Mar 20 20:08 ..
 -rw-r--r--  1 root root  470 Jan 21 21:57 secrets.nix                   <--- File we created
 -rw-r--r--  1 root root 1667 Jan 21 21:58 system-configs.nix            <--- File we created
 
-[manager@satisfactory-prod:~]$
+[manager@nixos:~]$
 ```
 
 Next we will want to modify `configuration.nix` to include the new `satisfactory.nix` and `system-configs.nix` configs added.
