@@ -133,6 +133,12 @@ The final result might look like so:
 > [!NOTE]
 > This assumes the new configs were placed in the root nixos config directory, `/etc/nixos/`. If your configs are in a different location ensure the path (*absolute, or relative from `/etc/nixos/` folder*) is included.
 
+Since we have specified a different hostname in `secrets.nix` used in `system-configs.nix` then comment out the hostname defined in the original `/etc/nixos/configuration.nix`
+
+```bash
+sudo sed -i '/^[[:space:]]*networking\.hostName/s/^/#/' /etc/nixos/configuration.nix
+```
+
 Finally we will need to update the system by running a system rebuild
 
 ```bash
