@@ -87,4 +87,58 @@ For example I might add `vim`:
 # Omitted end /etc/nixos/configuration.nix
 ```
 
-While technically `vim` is commented in the list, I wanted to show adding to the list.
+Do not need commas for this list. NixOS will fail to build if you do.
+
+> [!NOTE]
+> While technically, I could have uncommented `vim` in the list, I wanted to show adding to the list.
+
+After adding packages to the list you will need to rebuild NixOS.
+
+```bash
+sudo nixos-rebuild switch
+```
+
+Example output it might show:
+
+```text
+$ sudo nixos-rebuild switch
+building Nix...
+building the system configuration...
+these 11 derivations will be built:
+  /nix/store/32c5qamfykn25n86naqkzl4lrpifbgg8-system-path.drv
+  /nix/store/fn9jac6lcmhhpn0vm1ih4fpayy6cjsxn-X-Restart-Triggers-polkit.drv
+  /nix/store/1m577xwk5wak6l7p2nrj7nrha444ah52-unit-polkit.service.drv
+  /nix/store/gcrs6b5kxj318knwhkw6ngsl5ba01bbr-dbus-1.drv
+  /nix/store/bj7hqfl46v11z2gwxw15j290yk901zfl-X-Restart-Triggers-dbus.drv
+  /nix/store/cvjihkc68s7c18cbnq3xax589x6l9hyv-unit-dbus.service.drv
+  /nix/store/b3yqk71pgcgnigny6yg6kkk6mh787zqk-system-units.drv
+  /nix/store/z7451mmmdmrlcv7glnpd7v5vm6b4gcs1-unit-dbus.service.drv
+  /nix/store/nj4n4hhjl4x695aq37ci2ravvn1vrzsj-user-units.drv
+  /nix/store/brkwklqbm0ggq4672rlc3gfk665m4548-etc.drv
+  /nix/store/1a3wy672yw9wvccxspaddfhvg72plcin-nixos-system-nixos-24.05.5266.babc25a577c3.drv
+building '/nix/store/32c5qamfykn25n86naqkzl4lrpifbgg8-system-path.drv'...
+created 7027 symlinks in user environment
+building '/nix/store/fn9jac6lcmhhpn0vm1ih4fpayy6cjsxn-X-Restart-Triggers-polkit.drv'...
+building '/nix/store/gcrs6b5kxj318knwhkw6ngsl5ba01bbr-dbus-1.drv'...
+building '/nix/store/1m577xwk5wak6l7p2nrj7nrha444ah52-unit-polkit.service.drv'...
+building '/nix/store/bj7hqfl46v11z2gwxw15j290yk901zfl-X-Restart-Triggers-dbus.drv'...
+building '/nix/store/cvjihkc68s7c18cbnq3xax589x6l9hyv-unit-dbus.service.drv'...
+building '/nix/store/z7451mmmdmrlcv7glnpd7v5vm6b4gcs1-unit-dbus.service.drv'...
+building '/nix/store/b3yqk71pgcgnigny6yg6kkk6mh787zqk-system-units.drv'...
+building '/nix/store/nj4n4hhjl4x695aq37ci2ravvn1vrzsj-user-units.drv'...
+building '/nix/store/brkwklqbm0ggq4672rlc3gfk665m4548-etc.drv'...
+building '/nix/store/1a3wy672yw9wvccxspaddfhvg72plcin-nixos-system-nixos-24.05.5266.babc25a577c3.drv'...
+updating GRUB 2 menu...
+Warning: os-prober will be executed to detect other bootable partitions.
+Its output will be used to detect bootable binaries on them and create new boot entries.
+lsblk: /dev/mapper/no*[0-9]: not a block device
+lsblk: /dev/mapper/raid*[0-9]: not a block device
+lsblk: /dev/mapper/disks*[0-9]: not a block device
+activating the configuration...
+setting up /etc...
+reloading user units for architect...
+restarting sysinit-reactivation.target
+reloading the following units: dbus.service
+
+$
+```
