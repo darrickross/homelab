@@ -145,7 +145,31 @@ Finally we will need to update the system by running a system rebuild
 sudo nixos-rebuild switch
 ```
 
-- TODO add Output from fresh build
+Example output
+
+```text
+$ sudo nixos-rebuild switch
+building Nix...
+building the system configuration...
+updating GRUB 2 menu...
+Warning: os-prober will be executed to detect other bootable partitions.
+Its output will be used to detect bootable binaries on them and create new boot entries.
+lsblk: /dev/mapper/no*[0-9]: not a block device
+lsblk: /dev/mapper/raid*[0-9]: not a block device
+lsblk: /dev/mapper/disks*[0-9]: not a block device
+stopping the following units: logrotate-checkconf.service, network-setup.service, systemd-sysctl.service, systemd-tmpfiles-resetup.service
+activating the configuration...
+reviving group 'satisfactory' with GID 994
+reviving user 'satisfactory' with UID 995
+setting up /etc...
+reloading user units for architect...
+restarting sysinit-reactivation.target
+reloading the following units: dbus.service, firewall.service
+starting the following units: logrotate-checkconf.service, network-setup.service, systemd-sysctl.service, systemd-tmpfiles-resetup.service
+the following new units were started: satisfactory.service
+
+$
+```
 
 This will rebuild the system based on the current state of the `/etc/nixos/configuration.nix` config. This will also include any additional files included using the `imports` block.
 
