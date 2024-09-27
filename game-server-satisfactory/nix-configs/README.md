@@ -32,6 +32,18 @@ After you spin up NixOS on the system you will be hosting Satisfactory on. You w
     - Copy the `example-secrets.nix` and name it `secrets.nix` updating any values as needed.
 3. `system-configs.nix`
 
+I `curl` them down from my repo, but you might need to use `scp`.
+
+```bash
+cd /etc/nixos/
+
+sudo curl -L -O https://github.com/darrickross/infrastructure-services/raw/refs/heads/main/game-server-satisfactory/nix-configs/example-secrets.nix
+sudo curl -L -O https://github.com/darrickross/infrastructure-services/raw/refs/heads/main/game-server-satisfactory/nix-configs/satisfactory.nix
+sudo curl -L -O https://github.com/darrickross/infrastructure-services/raw/refs/heads/main/game-server-satisfactory/nix-configs/system-configs.nix
+
+sudo mv example-secrets.nix secrets.nix
+```
+
 After transferring these files to the NixOS system we will move them to the root config directory `/etc/nixos/`.
 
 > [!IMPORTANT]
