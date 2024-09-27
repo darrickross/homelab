@@ -51,7 +51,7 @@ After transferring these files to the NixOS system we will move them to the root
 
 &
 
-> [!NOTE]
+> [!WARNING]
 > Dumping these configs in the root nixos configs directory `/etc/nixos/` is not exactly the best solution. A better solution might be to create a folder in the root configs directory (aka `/etc/nixos/satisfactory/`) which contains all satisfactory configs for example. This is however an improvement I will be looking into when I set up the terraform deployment for this server to truly make this an automatic deployment from start to finish.
 
 Now that the 3 files exist in the root config directory `/etc/nixos/` like so:
