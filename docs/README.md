@@ -6,3 +6,4 @@ A collection of readme's which keeps some notes, information, and guides for dif
 
 - [*root directory*](../README.md)
   - [/docs](./README.md) <------------ ***YOU ARE HERE***
+    - [NixOS.md](Nixos.md)
