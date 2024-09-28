@@ -11,7 +11,5 @@
     system-ssh-port         = "22";
 
     # Satisfactory Ports
-    server-game-port-udp    = "7777";
-    server-beacon-port-udp  = "15000";
-    server-query-port-udp   = "15777";
+    server-game-port        = "7777";
 }

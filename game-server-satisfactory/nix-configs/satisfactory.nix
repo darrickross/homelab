@@ -17,9 +17,7 @@ let
     # Import secrets as a variable from another file
     # Example ./secrets.nix content:
     # {
-    #     server-game-port-udp    = "7777";
-    #     server-beacon-port-udp  = "15000";
-    #     server-query-port-udp   = "15777";
+    #     server-game-port = "7777";
     # }
     secrets                     = import ./secrets.nix;
 
@@ -125,10 +123,10 @@ in {
             ExecStart = lib.escapeShellArgs [
                 "${server-install-directory}/FactoryServer.sh"
                 "-multihome=0.0.0.0"                            # Need to force IPv4
-                "-BeaconPort=${secrets.server-beacon-port-udp}"
-                "-Port=${secrets.server-game-port-udp}"
-                "-ServerQueryPort=${secrets.server-query-port-udp}"
+                "-Port=${secrets.server-game-port}"
                 # https://satisfactory.fandom.com/wiki/Dedicated_servers#Command_line_options
+                # ^^^ At the moment (v1.0) this link gives bad info.
+                # Server no longer has 3 ports, now just 1.
             ];
             Nice                = "-5";
             PrivateTmp          = true;
@@ -149,13 +147,13 @@ in {
     };
 
     networking.firewall.allowedUDPPorts = [
-        # # https://satisfactory.fandom.com/wiki/Dedicated_servers#Port_forwarding_and_firewall_settings
-        # Satisfactory Beacon Port
-        (lib.toInt secrets.server-beacon-port-udp)
         # Satisfactory Game Port
-        (lib.toInt secrets.server-game-port-udp)
-        # Satisfactory Query Port
-        (lib.toInt secrets.server-query-port-udp)
+        (lib.toInt secrets.server-game-port)
+    ];
+
+    networking.firewall.allowedTCPPorts = [
+        # Satisfactory Game Port
+        (lib.toInt secrets.server-game-port)
     ];
 
     # Enable Logrotate
