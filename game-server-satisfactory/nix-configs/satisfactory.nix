@@ -64,9 +64,9 @@ in {
             ExecStartPre = "${pkgs.resholve.writeScript "steam" {
                 interpreter = "${pkgs.zsh}/bin/zsh";
                 inputs = with pkgs; [
+                    findutils   # Adds 'find'
                     patchelf
                     steamcmd
-                    findutils   # Adds 'find'
                 ];
                 execer = with pkgs; [
                     "cannot:${steamcmd}/bin/steamcmd"
