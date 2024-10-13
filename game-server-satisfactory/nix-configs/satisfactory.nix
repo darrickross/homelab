@@ -64,7 +64,10 @@ in {
             ExecStartPre = "${pkgs.resholve.writeScript "steam" {
                 interpreter = "${pkgs.bash}/bin/bash";
                 inputs = with pkgs; [
+                    coreutils   # Adds 'cut'
+                    file        # Adds 'file'
                     findutils   # Adds 'find'
+                    gnugrep     # Adds 'grep'
                     patchelf
                     steamcmd
                 ];
@@ -105,17 +108,9 @@ in {
                 #        ^^ escape the $ { } so that nix doesn't try to
                 #           replace it as a Nix config variable
 
-                # Iterate over the downloaded files
-                for f in $(find "$dir"); do
-
-                    # Skip if not
-                    # - A file
-                    # - Executable
-                    if ! [[ -f $f && -x $f ]]; then
-                        continue
-                    fi
-
-                    # Update the interpreter to the path on NixOS.
+                # Iterate over just the Executable and Linkable Format (ELF) files
+                # These are dynamiclly linked files which should be fixed by patchelf for nixos
+                find "$dir" -type f -exec file {} + | grep 'ELF .* executable' | cut -d: -f1 | while IFS= read -r f; do
                     patchelf --set-interpreter ${pkgs.glibc}/lib/ld-linux-x86-64.so.2 "$f" || true
                 done
             ''}";
