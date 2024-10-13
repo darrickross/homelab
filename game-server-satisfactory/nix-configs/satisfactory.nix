@@ -62,7 +62,7 @@ in {
             # Download the game
             # Then fix those binaries using patchelf
             ExecStartPre = "${pkgs.resholve.writeScript "steam" {
-                interpreter = "${pkgs.zsh}/bin/zsh";
+                interpreter = "${pkgs.bash}/bin/bash";
                 inputs = with pkgs; [
                     findutils   # Adds 'find'
                     patchelf
@@ -88,11 +88,11 @@ in {
                 )
 
                 # Add optional beta arguments if a beta is present
-                if [[ $beta_id ]]; then
+                if [[ -n $beta_id ]]; then
                     cmds+=(-beta $beta_id)
 
                     # If the beta has a password...
-                    if [[ $beta_password ]]; then
+                    if [[ -n $beta_password ]]; then
                         cmds+=(-betapassword $beta_password)
                     fi
                 fi
@@ -101,7 +101,9 @@ in {
                 cmds+=(+quit)
 
                 # Execute the Command and its Arguments
-                steamcmd $cmds
+                steamcmd ''${cmds[@]}
+                #        ^^ escape the $ { } so that nix doesn't try to
+                #           replace it as a Nix config variable
 
                 # Iterate over the downloaded files
                 for f in $(find "$dir"); do
@@ -114,7 +116,7 @@ in {
                     fi
 
                     # Update the interpreter to the path on NixOS.
-                    patchelf --set-interpreter ${pkgs.glibc}/lib/ld-linux-x86-64.so.2 $f || true
+                    patchelf --set-interpreter ${pkgs.glibc}/lib/ld-linux-x86-64.so.2 "$f" || true
                 done
             ''}";
 
