@@ -2,7 +2,7 @@
 
 [Satisfactory dedicated server wiki](https://satisfactory.fandom.com/wiki/Dedicated_servers)
 
-## Relative Folder Structure
+## 0 - Relative Folder Structure
 
 - [*root directory*](../README.md)
   - [/game-server-satisfactory](./README.md) - ***YOU ARE HERE***
@@ -11,7 +11,20 @@
     - [simple-ubuntu-configs/](./simple-ubuntu-configs/README.md)
       - A simple Ubuntu config and help document to install a Satisfactory server on Ubuntu
 
-## Networking
+## 1 - Table of Contents
+
+- [0 - Relative Folder Structure](#0---relative-folder-structure)
+- [1 - Table of Contents](#1---table-of-contents)
+- [2 - Networking](#2---networking)
+- [3 - Command Line Arguments](#3---command-line-arguments)
+- [4 - Troubleshooting errors](#4---troubleshooting-errors)
+  - [4.1 - UNetConnection::Tick: Connection TIMED OUT. Closing Connection](#41---unetconnectiontick-connection-timed-out-closing-connection)
+    - [4.1.a - Common Error Situation](#41a---common-error-situation)
+    - [4.1.b - Example Log Messages](#41b---example-log-messages)
+    - [4.1.c - Solution](#41c---solution)
+    - [4.1.d - Example Links discussing fix](#41d---example-links-discussing-fix)
+
+## 2 - Networking
 
 | Default port (UDP only) |  Port Usage |                                                                                                                                    Description                                                                                                                                   |
 |:-----------------------:|:-----------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
@@ -19,7 +32,7 @@
 | 15000                   | Beacon Port | This port is automatically incremented if multiple instances of the server are launched and the default is in use already. As of Update 6, **this port can be redirected freely.**                                                                                                   |
 | 7777                    | Game Port   | **This port can be redirected freely(**) using the -Port parameter upon server startup, e. g. "-Port=10000" to change the game port to UDP port 10000. At present, if the default port is in use, the next higher one will be checked until a free port is found, and it will be used. |
 
-## Command Line Arguments
+## 3 - Command Line Arguments
 
 |             Option               |          Example         |                                                                                                                      Description                                                                                                                      |
 |:--------------------------------:|:------------------------:|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
@@ -31,11 +44,15 @@
 | `-unattended`             | `-unattended`            | Makes it such that the Dedicated Server will not present any dialogs which might otherwise interrupt the server from running if not attended to. This option is implicit by default when launching on Linux,                                          |
 | `-DisablePacketRouting`   | `-DisablePacketRouting`  | Startup argument for disabling the packet router (Automatically disabled with multihome)                                                                                                                                                              |
 
-## Troubleshooting errors
+## 4 - Troubleshooting errors
 
-### UNetConnection::Tick: Connection TIMED OUT. Closing Connection
+### 4.1 - UNetConnection::Tick: Connection TIMED OUT. Closing Connection
 
-Full Error Message
+#### 4.1.a - Common Error Situation
+
+Players are unable to connect to the server, and receive the error `UNetConnection::Tick: Connection TIMED OUT. Closing Connection`.
+
+#### 4.1.b - Example Log Messages
 
 ```log
 UNetConnection::Tick: Connection TIMED OUT. Closing
@@ -48,6 +65,8 @@ BP_PlayerController_C_214769524, UniqueId: Steam:1
 (76571198415751586)
 ```
 
+#### 4.1.c - Solution
+
 Update `INSTALL_DIRECTORY/FactoryGame/Saved/Config/LinuxServer/Game.ini` with the content:
 
 ```ini
@@ -58,4 +77,6 @@ ConnectionTimeout=120.0
 
 This increases the allowed connection time for slower connections.
 
-[Website Solution A](https://shockbyte.com/billing/knowledgebase/654/How-To-Fix-Connection-Timed-Out-In-Satisfactory.html)
+#### 4.1.d - Example Links discussing fix
+
+- <https://shockbyte.com/billing/knowledgebase/654/How-To-Fix-Connection-Timed-Out-In-Satisfactory.html>
