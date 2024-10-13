@@ -75,7 +75,7 @@ in {
                     "cannot:${steamcmd}/bin/steamcmd"
                 ];
             } ''
-                set -eux
+                set -eu
 
                 dir="${server-install-directory}"
                 app_id="${steam-game-server-app-id}"
