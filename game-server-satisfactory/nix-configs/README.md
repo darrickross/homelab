@@ -24,6 +24,10 @@ Initially I used the example [Valheim Server on NixOS v2](https://kevincox.ca/20
 
 ## How to use these configs
 
+> [!TIP]
+> As a first step if you have just installed NixOS you will need to obtain a connection to the server. One method of this is to enable SSH. If you need help doing this use my guide on setting up SSH on nixos for the first time.
+> [REPO_ROOT/docs/nixos.md - Installing Packages on NixOS](../../docs/Nixos.md#set-up-ssh-on-nixos)
+
 After you spin up NixOS on the system you will be hosting Satisfactory on. You will want to open the system and transfer the 3 files to it
 
 1. `satisfactory.nix`

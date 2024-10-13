@@ -15,6 +15,7 @@ This is a collection of notes on NixOS and how to work with it.
 - [Useful Notes](#useful-notes)
   - [NixOS Text Editors](#nixos-text-editors)
   - [Installing Packages on NixOS](#installing-packages-on-nixos)
+  - [Set up SSH on NixOS](#set-up-ssh-on-nixos)
 
 ## Useful Notes
 
@@ -141,4 +142,63 @@ restarting sysinit-reactivation.target
 reloading the following units: dbus.service
 
 $
+```
+
+### Set up SSH on NixOS
+
+1. Log in with an admin user
+2. Modify the `/etc/nixos/configuration.nix` to allow SSH
+    1. `sudo nano /etc/nixos/configuration.nix`
+    2. Lines to change
+
+        ```diff
+          # List services that you want to enable:
+
+          # Enable the OpenSSH daemon
+        - # services.openssh.enable = true
+        + services.openssh.enable = true;
+
+          # Open ports in the firewall
+        - # networking.firewall.allowedTCPPorts = [ ... ]
+        + networking.firewall.enable = true;
+        + networking.firewall.allowedTCPPorts = [ 22 ];
+          # networking.firewall.allowedUDPPorts = [ ... ]
+          # Or disable the firewall altogether
+          # networking.firewall.enable = false
+        ```
+
+    3. End result
+
+        ```nix
+        {
+          # Omitted HERE ...
+
+          # List services that you want to enable:
+
+          # Enable the OpenSSH daemon.
+          services.openssh.enable = true;
+
+          # Open ports in the firewall.
+          networking.firewall.enable = true;
+          networking.firewall.allowedTCPPorts = [ 22 ];
+          # networking.firewall.allowedUDPPorts = [ ... ];
+          # Or disable the firewall altogether.
+          # networking.firewall.enable = false;
+
+          # Omitted HERE ...
+        }
+        ```
+
+3. Reload the Nix Config
+
+    ```bash
+    sudo nixos-rebuild switch
+    ```
+
+You can now ssh into the system using the system's IP address, or hostname.
+
+Find the IP Address using
+
+```bash
+ip a
 ```
