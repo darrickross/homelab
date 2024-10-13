@@ -79,7 +79,7 @@ in {
                 beta_id="${steam-game-beta-id}"
                 beta_password="${steam-game-beta-password}"
 
-                # These are arguments you will always
+                # Initial steamcmd command arguments
                 cmds=(
                     +force_install_dir $dir
                     +login anonymous
