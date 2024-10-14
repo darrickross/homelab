@@ -194,7 +194,18 @@ sudo nixos-rebuild switch
 
 Example output
 
-```text
+> [!NOTE]
+> The following output is not what the first rebuild will look like. For a full example log of what
+>
+> ```bash
+> sudo nixos-rebuild switch
+> ```
+>
+> Will look like see, [REPO_ROOT/docs/full-output-examples/gs-satisfactory-nixos-build.log](../../docs/full-output-examples/gs-satisfactory-nixos-build.log)
+
+Brisk example
+
+```log
 $ sudo nixos-rebuild switch
 building Nix...
 building the system configuration...
@@ -227,8 +238,6 @@ You can also check the systemctl status of the service using:
 ```bash
 sudo systemctl status satisfactory
 ```
-
-- TODO add Output from fresh build
 
 ## 4 - Where to access the server
 
