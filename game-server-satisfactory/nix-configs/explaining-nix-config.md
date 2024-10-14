@@ -52,9 +52,7 @@ The `secrets.nix` and example version `example-secrets.nix` is used to configure
     system-ssh-port         = "22";
 
     # Satisfactory Ports
-    server-game-port-udp    = "7777";
-    server-beacon-port-udp  = "15000";
-    server-query-port-udp   = "15777";
+    server-game-port        = "7777";
 }
 ```
 
@@ -84,9 +82,7 @@ let
     # Import secrets as a variable from another file
     # Example ./secrets.nix content:
     # {
-    #     server-game-port-udp    = "7777";
-    #     server-beacon-port-udp  = "15000";
-    #     server-query-port-udp   = "15777";
+    #     server-game-port = "7777";
     # }
     secrets                     = import ./secrets.nix;
 
@@ -159,24 +155,27 @@ in
             # Download the game
             # Then fix those binaries using patchelf
             ExecStartPre = "${pkgs.resholve.writeScript "steam" {
-                interpreter = "${pkgs.zsh}/bin/zsh";
+                interpreter = "${pkgs.bash}/bin/bash";
                 inputs = with pkgs; [
+                    coreutils   # Adds 'cut'
+                    file        # Adds 'file'
+                    findutils   # Adds 'find'
+                    gnugrep     # Adds 'grep'
                     patchelf
                     steamcmd
-                    findutils   # Adds 'find'
                 ];
                 execer = with pkgs; [
                     "cannot:${steamcmd}/bin/steamcmd"
                 ];
             } ''
-                set -eux
+                set -eu
 
                 dir="${server-install-directory}"
                 app_id="${steam-game-server-app-id}"
                 beta_id="${steam-game-beta-id}"
                 beta_password="${steam-game-beta-password}"
 
-                # These are arguments you will always
+                # Initial steamcmd command arguments
                 cmds=(
                     +force_install_dir $dir
                     +login anonymous
@@ -185,11 +184,11 @@ in
                 )
 
                 # Add optional beta arguments if a beta is present
-                if [[ $beta_id ]]; then
+                if [[ -n $beta_id ]]; then
                     cmds+=(-beta $beta_id)
 
                     # If the beta has a password...
-                    if [[ $beta_password ]]; then
+                    if [[ -n $beta_password ]]; then
                         cmds+=(-betapassword $beta_password)
                     fi
                 fi
@@ -198,20 +197,14 @@ in
                 cmds+=(+quit)
 
                 # Execute the Command and its Arguments
-                steamcmd $cmds
+                steamcmd ''${cmds[@]}
+                #        ^^ escape the $ { } so that nix doesn't try to
+                #           replace it as a Nix config variable
 
-                # Iterate over the downloaded files
-                for f in $(find "$dir"); do
-
-                    # Skip if not
-                    # - A file
-                    # - Executable
-                    if ! [[ -f $f && -x $f ]]; then
-                        continue
-                    fi
-
-                    # Update the interpreter to the path on NixOS.
-                    patchelf --set-interpreter ${pkgs.glibc}/lib/ld-linux-x86-64.so.2 $f || true
+                # Iterate over just the Executable and Linkable Format (ELF) files
+                # These are dynamically linked files which should be fixed by patchelf for nixos
+                find "$dir" -type f -exec file {} + | grep 'ELF .* executable' | cut -d: -f1 | while IFS= read -r f; do
+                    patchelf --set-interpreter ${pkgs.glibc}/lib/ld-linux-x86-64.so.2 "$f" || true
                 done
             ''}";
 
@@ -220,10 +213,10 @@ in
             ExecStart = lib.escapeShellArgs [
                 "${server-install-directory}/FactoryServer.sh"
                 "-multihome=0.0.0.0"                            # Need to force IPv4
-                "-BeaconPort=${secrets.server-beacon-port-udp}"
-                "-Port=${secrets.server-game-port-udp}"
-                "-ServerQueryPort=${secrets.server-query-port-udp}"
+                "-Port=${secrets.server-game-port}"
                 # https://satisfactory.fandom.com/wiki/Dedicated_servers#Command_line_options
+                # ^^^ At the moment (v1.0) this link gives bad info.
+                # Server no longer has 3 ports, now just 1.
             ];
             Nice                = "-5";
             PrivateTmp          = true;
@@ -255,10 +248,10 @@ First the easier one, the actual command to start the server `ExecStart`.
 ExecStart = lib.escapeShellArgs [
     "${server-install-directory}/FactoryServer.sh"
     "-multihome=0.0.0.0"                            # Need to force IPv4
-    "-BeaconPort=${secrets.server-beacon-port-udp}"
-    "-Port=${secrets.server-game-port-udp}"
-    "-ServerQueryPort=${secrets.server-query-port-udp}"
+    "-Port=${secrets.server-game-port}"
     # https://satisfactory.fandom.com/wiki/Dedicated_servers#Command_line_options
+    # ^^^ At the moment (v1.0) this link gives bad info.
+    # Server no longer has 3 ports, now just 1.
 ];
 ```
 
@@ -270,24 +263,27 @@ Now the more complicated, `ExecStartPre`.
 # Download the game
 # Then fix those binaries using patchelf
 ExecStartPre = "${pkgs.resholve.writeScript "steam" {
-    interpreter = "${pkgs.zsh}/bin/zsh";
+    interpreter = "${pkgs.bash}/bin/bash";
     inputs = with pkgs; [
+        coreutils   # Adds 'cut'
+        file        # Adds 'file'
+        findutils   # Adds 'find'
+        gnugrep     # Adds 'grep'
         patchelf
         steamcmd
-        findutils   # Adds 'find'
     ];
     execer = with pkgs; [
         "cannot:${steamcmd}/bin/steamcmd"
     ];
 } ''
-    set -eux
+    set -eu
 
     dir="${server-install-directory}"
     app_id="${steam-game-server-app-id}"
     beta_id="${steam-game-beta-id}"
     beta_password="${steam-game-beta-password}"
 
-    # These are arguments you will always
+    # Initial steamcmd command arguments
     cmds=(
         +force_install_dir $dir
         +login anonymous
@@ -296,11 +292,11 @@ ExecStartPre = "${pkgs.resholve.writeScript "steam" {
     )
 
     # Add optional beta arguments if a beta is present
-    if [[ $beta_id ]]; then
+    if [[ -n $beta_id ]]; then
         cmds+=(-beta $beta_id)
 
         # If the beta has a password...
-        if [[ $beta_password ]]; then
+        if [[ -n $beta_password ]]; then
             cmds+=(-betapassword $beta_password)
         fi
     fi
@@ -309,20 +305,14 @@ ExecStartPre = "${pkgs.resholve.writeScript "steam" {
     cmds+=(+quit)
 
     # Execute the Command and its Arguments
-    steamcmd $cmds
+    steamcmd ''${cmds[@]}
+    #        ^^ escape the $ { } so that nix doesn't try to
+    #           replace it as a Nix config variable
 
-    # Iterate over the downloaded files
-    for f in $(find "$dir"); do
-
-        # Skip if not
-        # - A file
-        # - Executable
-        if ! [[ -f $f && -x $f ]]; then
-            continue
-        fi
-
-        # Update the interpreter to the path on NixOS.
-        patchelf --set-interpreter ${pkgs.glibc}/lib/ld-linux-x86-64.so.2 $f || true
+    # Iterate over just the Executable and Linkable Format (ELF) files
+    # These are dynamically linked files which should be fixed by patchelf for nixos
+    find "$dir" -type f -exec file {} + | grep 'ELF .* executable' | cut -d: -f1 | while IFS= read -r f; do
+        patchelf --set-interpreter ${pkgs.glibc}/lib/ld-linux-x86-64.so.2 "$f" || true
     done
 ''}";
 ```
@@ -356,13 +346,13 @@ in
     # ...
 
     networking.firewall.allowedUDPPorts = [
-        # # https://satisfactory.fandom.com/wiki/Dedicated_servers#Port_forwarding_and_firewall_settings
-        # Satisfactory Beacon Port
-        (lib.toInt secrets.server-beacon-port-udp)
         # Satisfactory Game Port
-        (lib.toInt secrets.server-game-port-udp)
-        # Satisfactory Query Port
-        (lib.toInt secrets.server-query-port-udp)
+        (lib.toInt secrets.server-game-port)
+    ];
+
+    networking.firewall.allowedTCPPorts = [
+        # Satisfactory Game Port
+        (lib.toInt secrets.server-game-port)
     ];
 
     # ...
