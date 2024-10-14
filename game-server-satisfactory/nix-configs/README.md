@@ -231,13 +231,48 @@ $
 
 This will rebuild the system based on the current state of the `/etc/nixos/configuration.nix` config. This will also include any additional files included using the `imports` block.
 
-Assuming everything built successfully you can see logs located in log directory for the satisfactory server where the config specified in `satisfactory.nix` under the variable `log-folder`.
+> [!IMPORTANT]
+> I highly suggest rebooting the system to apply all network changes fully to the system.
 
-You can also check the systemctl status of the service using:
+Reboot the system to apply all network changes.
+
+```bash
+sudo shutdown -r
+```
+
+After the system reboots you can check the status of the satisfactory server service using:
 
 ```bash
 sudo systemctl status satisfactory
 ```
+
+Example normal status
+
+```log
+● satisfactory.service
+     Loaded: loaded (/etc/systemd/system/satisfactory.service; enabled; preset: enabled)
+     Active: active (running) since Sun 2024-10-13 23:29:06 EDT; 2min 34s ago
+    Process: 1018 ExecStartPre=/nix/store/3x4srw83kridm3f2r4a1d4zgv1vdc2cp-steam (code=exited, status=0/SUCCESS)
+   Main PID: 1091 (FactoryServer.s)
+         IP: 57.6M in, 521.0K out
+         IO: 4.2G read, 366.4M written
+      Tasks: 37 (limit: 19178)
+     Memory: 4.4G (peak: 4.7G)
+        CPU: 34.859s
+     CGroup: /system.slice/satisfactory.service
+             ├─1091 /bin/sh /var/lib/satisfactory/FactoryServer.sh -multihome=0.0.0.0 -Port=7777
+             └─1098 /var/lib/satisfactory/Engine/Binaries/Linux/FactoryServer-Linux-Shipping FactoryGame -multihome=0.0.0.0 -Port=7777
+
+Oct 13 23:28:38 satisfactory-prod systemd[1]: Starting satisfactory.service...
+Oct 13 23:29:06 satisfactory-prod systemd[1]: Started satisfactory.service.
+Oct 13 23:29:08 satisfactory-prod FactoryServer-Linux-Shipping[1098]: LogOnlineSchema: Error: Invalid schema category lobby: Service descriptor id lobby not found.
+lines 1-17
+```
+
+Assuming everything built successfully you can see logs located in log directory for the satisfactory server where the config specified in `satisfactory.nix` under the variable `log-folder`.
+
+> [!TIP]
+> If something is wrong with the server, like its in a reboot loop, check the logs. By default they are located in `/var/log/satisfactory`.
 
 ## 4 - Where to access the server
 
