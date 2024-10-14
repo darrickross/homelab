@@ -193,8 +193,6 @@ No VM guests are running outdated hypervisor (qemu) binaries on this host.
 ### Setting Variables
 
 ```bash
-GAME_PORT_QUERY=15777
-GAME_PORT_BEACON=15000
 GAME_PORT_GAME=7777
 UFW_PROFILE=satisfactory-firewall
 UFW_APPLICATION_PROFILE_FILE="$HOME/$UFW_PROFILE.conf"
@@ -239,7 +237,7 @@ cat << HEREDOC_UFW_APPLICATION > $UFW_APPLICATION_PROFILE_FILE
 [$UFW_PROFILE]
 title=Satisfactory
 description=Satisfactory Dedicated Server Firewall Rules
-ports=$GAME_PORT_QUERY/udp|$GAME_PORT_BEACON/udp|$GAME_PORT_GAME/udp
+ports=$GAME_PORT_GAME/tcp|$GAME_PORT_GAME/udp
 HEREDOC_UFW_APPLICATION
 
 # copy the file you just created to the ufw applications folder
@@ -499,7 +497,7 @@ ExecStartPre=/usr/games/steamcmd +force_install_dir "$SATISFACTORY_INSTALL_FOLDE
 
 # Start the game server
 # Note '-multihome=0.0.0.0' has been needed to fix an IPv6 issue, we are fixing this by forcing the server to bind to just ipv4 addresses
-ExecStart=$SATISFACTORY_INSTALL_FOLDER/FactoryServer.sh -multihome=0.0.0.0 -ServerQueryPort=$GAME_PORT_QUERY -BeaconPort=$GAME_PORT_BEACON -Port=$GAME_PORT_GAME
+ExecStart=$SATISFACTORY_INSTALL_FOLDER/FactoryServer.sh -multihome=0.0.0.0 -Port=$GAME_PORT_GAME
 
 [Install]
 WantedBy=multi-user.target
@@ -560,8 +558,8 @@ sudo systemctl status $GAME_SERVER_SERVICE
      Memory: 209.5M
         CPU: 27.327s
      CGroup: /system.slice/satisfactory.service
-             ├─3385 /bin/sh /var/lib/satisfactory/FactoryServer.sh -multihome=0.0.0.0 -ServerQueryPort=15777 -BeaconPort=15000 -Port=7777
-             └─3392 /var/lib/satisfactory/Engine/Binaries/Linux/UnrealServer-Linux-Shipping FactoryGame -multihome=0.0.0.0 -ServerQueryPort=15777 -BeaconPort=15000 -Port=7777
+             ├─3385 /bin/sh /var/lib/satisfactory/FactoryServer.sh -multihome=0.0.0.0 -Port=7777
+             └─3392 /var/lib/satisfactory/Engine/Binaries/Linux/UnrealServer-Linux-Shipping FactoryGame -multihome=0.0.0.0 -Port=7777
 
 Jan 25 23:24:53 satisfactory-test FactoryServer.sh[3392]: [2024.01.25-23.24.53:126][  0]LogLoad: Took 0.830103 seconds to LoadMap(/Game/FactoryGame/Map/DedicatedserverEntry)
 Jan 25 23:24:53 satisfactory-test FactoryServer.sh[3392]: [2024.01.25-23.24.53:127][  0]LogGame: EOS Metrics, starting service.
@@ -726,7 +724,7 @@ ExecStartPre=/usr/games/steamcmd +force_install_dir "$SATISFACTORY_INSTALL_FOLDE
 
 # Start the game server
 # Note '-multihome=0.0.0.0' has been needed to fix an IPv6 issue, we are fixing this by forcing the server to bind to just ipv4 addresses
-ExecStart=$SATISFACTORY_INSTALL_FOLDER/FactoryServer.sh -multihome=0.0.0.0 -ServerQueryPort=$GAME_PORT_QUERY -BeaconPort=$GAME_PORT_BEACON -Port=$GAME_PORT_GAME
+ExecStart=$SATISFACTORY_INSTALL_FOLDER/FactoryServer.sh -multihome=0.0.0.0 -Port=$GAME_PORT_GAME
 
 [Install]
 WantedBy=multi-user.target
@@ -761,8 +759,8 @@ sudo systemctl status $GAME_SERVER_SERVICE
      Memory: 7.7M
         CPU: 19.696s
      CGroup: /system.slice/satisfactory.service
-             ├─3556 /bin/sh /var/lib/satisfactory/FactoryServer.sh -multihome=0.0.0.0 -ServerQueryPort=15777 -BeaconPort=15000 -Port=7777
-             └─3564 /var/lib/satisfactory/Engine/Binaries/Linux/UnrealServer-Linux-Shipping FactoryGame -multihome=0.0.0.0 -ServerQueryPort=15777 -BeaconPort=15000 -Port=7777
+             ├─3556 /bin/sh /var/lib/satisfactory/FactoryServer.sh -multihome=0.0.0.0 -Port=7777
+             └─3564 /var/lib/satisfactory/Engine/Binaries/Linux/UnrealServer-Linux-Shipping FactoryGame -multihome=0.0.0.0 -Port=7777
 
 Jan 25 23:45:21 satisfactory-test systemd[1]: Starting satisfactory.service - Satisfactory dedicated server...
 Jan 25 23:45:43 satisfactory-test systemd[1]: Started satisfactory.service - Satisfactory dedicated server.
