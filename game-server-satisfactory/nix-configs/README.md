@@ -127,6 +127,31 @@ At the very top of the `configuration.nix` config we will see:
 
 We will want to update the imports to include both of the main nix configs, `satisfactory.nix` and `system-configs.nix`.
 
+Make the following changes:
+
+```diff
+# Edit this configuration file to define what should be installed on
+# your system.  Help is available in the configuration.nix(5) man page
+# and in the NixOS manual (accessible by running ‘nixos-help’).
+
+{ config, pkgs, ... }:
+
+{
+  imports =
+    [ # Include the results of the hardware scan.
+      ./hardware-configuration.nix
++
++     # Basic System Configs
++     ./system-configs.nix
++
++     # Satisfactory dedicated game server
++     ./satisfactory.nix
+    ];
+
+    # ... OMITTED
+}
+```
+
 The final result might look like so:
 
 ```nix
