@@ -12,10 +12,16 @@ This rant may move somewhere else, maybe a dedicated rants folder at the root.
 
 - [*root directory*](../../README.md)
   - [/game-server-satisfactory](../README.md)
-    - [nix-configs/](./README.md) - ***YOU ARE HERE***
-      - `example-secrets.nix` - Set of configuration settings which are best left secret.
-      - `satisfactory.nix` - Core Nix config which sets up Satisfactory.
-      - `system-configs.nix` - Core system configuration settings.
+    - [nix-configs/](./README.md) <------------ ***YOU ARE HERE***
+      - `example-secrets.nix`
+        - Set of configuration settings which are best left secret.
+        - [`example-secrets.nix` Explained](./explaining-nix-config.md#2---example-secretsnix)
+      - `satisfactory.nix`
+        - Core Nix config which sets up Satisfactory.
+        - [`satisfactory.nix` Explained](./explaining-nix-config.md#3---satisfactorynix)
+      - `system-configs.nix`
+        - Core system configuration settings.
+        - [`system-configs.nix` Explained](./explaining-nix-config.md#4---system-configsnix)
     - [simple-ubuntu-configs/](../simple-ubuntu-configs/README.md)
 
 ## 1 - Table of Contents

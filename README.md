@@ -6,7 +6,7 @@ Each service is provided as is for anyone to copy and run themselves. As I get s
 
 ## Relative Folder Structure
 
-- [*root directory*](README.md) - ***YOU ARE HERE***
+- [*root directory*](README.md) <------------ ***YOU ARE HERE***
   - [/docs](/docs/README.md)
   - [/game-server-satisfactory](./game-server-satisfactory/README.md)
     - Satisfactory Local Game Server - <https://www.satisfactorygame.com/>

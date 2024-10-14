@@ -5,7 +5,7 @@
 ## 0 - Relative Folder Structure
 
 - [*root directory*](../README.md)
-  - [/game-server-satisfactory](./README.md) - ***YOU ARE HERE***
+  - [/game-server-satisfactory](./README.md) <------------ ***YOU ARE HERE***
     - [nix-configs/](./nix-configs/README.md)
       - A NixOS configuration file for a Satisfactory Server
     - [simple-ubuntu-configs/](./simple-ubuntu-configs/README.md)
