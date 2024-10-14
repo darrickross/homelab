@@ -109,7 +109,7 @@ in {
                 #           replace it as a Nix config variable
 
                 # Iterate over just the Executable and Linkable Format (ELF) files
-                # These are dynamiclly linked files which should be fixed by patchelf for nixos
+                # These are dynamically linked files which should be fixed by patchelf for nixos
                 find "$dir" -type f -exec file {} + | grep 'ELF .* executable' | cut -d: -f1 | while IFS= read -r f; do
                     patchelf --set-interpreter ${pkgs.glibc}/lib/ld-linux-x86-64.so.2 "$f" || true
                 done
