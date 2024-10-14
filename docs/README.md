@@ -6,4 +6,6 @@ A collection of readme's which keeps some notes, information, and guides for dif
 
 - [*root directory*](../README.md)
   - [/docs](./README.md) <------------ ***YOU ARE HERE***
+    - [/full-output-examples](./full-output-examples/README.md)
+      - A collection of full output examples to compare to.
     - [NixOS.md](Nixos.md)
