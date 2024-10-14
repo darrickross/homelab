@@ -61,6 +61,9 @@ sudo curl -L -O https://github.com/darrickross/infrastructure-services/raw/refs/
 sudo curl -L -O https://github.com/darrickross/infrastructure-services/raw/refs/heads/main/game-server-satisfactory/nix-configs/system-configs.nix
 
 sudo mv example-secrets.nix secrets.nix
+
+# Change contents of secrets.nix to match your environment's ip
+sudo nano secrets.nix
 ```
 
 After transferring these files to the NixOS system we will move them to the root config directory `/etc/nixos/`.
