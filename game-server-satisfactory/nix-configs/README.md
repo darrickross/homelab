@@ -276,6 +276,31 @@ Assuming everything built successfully you can see logs located in log directory
 
 ## 4 - Where to access the server
 
+At this point you should now be able to access the server from the servers IPv4 Address.
+
+Find the IPv4 address using:
+
+```bash
+ip a
+```
+
+Example output
+
+```log
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host noprefixroute
+       valid_lft forever preferred_lft forever
+2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether XX:XX:XX:XX:XX:XX brd ff:ff:ff:ff:ff:ff
+    inet 192.168.0.41/24 scope global eth0  <----------------------------------- Look here for IPv4 Address
+       valid_lft forever preferred_lft forever
+    inet6 XXXX::XXXX:XXXX:XXXX:XXXX/64 scope link proto kernel_ll
+       valid_lft forever preferred_lft forever
+```
+
 ## 5 - Read next?
 
 If you want an explanation of each NixOS config read the [Explaining-Nix-Config.md](Explaining-Nix-Config.md)
