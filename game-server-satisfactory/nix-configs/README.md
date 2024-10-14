@@ -8,7 +8,7 @@ Now realistically, what I have going on here is not a massive cost savings by de
 
 This rant may move somewhere else, maybe a dedicated rants folder at the root.
 
-## Relative Folder Structure
+## 0 - Relative Folder Structure
 
 - [*root directory*](../../README.md)
   - [/game-server-satisfactory](../README.md)
@@ -18,15 +18,24 @@ This rant may move somewhere else, maybe a dedicated rants folder at the root.
       - `system-configs.nix` - Core system configuration settings.
     - [simple-ubuntu-configs/](../simple-ubuntu-configs/README.md)
 
-## Attribution
+## 1 - Table of Contents
+
+- [0 - Relative Folder Structure](#0---relative-folder-structure)
+- [1 - Table of Contents](#1---table-of-contents)
+- [2 - Attribution](#2---attribution)
+- [3 - How to use these configs](#3---how-to-use-these-configs)
+- [4 - Where to access the server](#4---where-to-access-the-server)
+- [5 - Read next?](#5---read-next)
+
+## 2 - Attribution
 
 Initially I used the example [Valheim Server on NixOS v2](https://kevincox.ca/2022/12/09/valheim-server-nixos-v2/). But I have since branched from the initial guide as I slowly start to better understand NixOS.
 
-## How to use these configs
+## 3 - How to use these configs
 
 > [!TIP]
 > As a first step if you have just installed NixOS you will need to obtain a connection to the server. One method of this is to enable SSH. If you need help doing this use my guide on setting up SSH on nixos for the first time.
-> [REPO_ROOT/docs/nixos.md - Installing Packages on NixOS](../../docs/Nixos.md#set-up-ssh-on-nixos)
+> [REPO_ROOT/docs/nixos.md - 2.c - Set up SSH on NixOS](../../docs/Nixos.md#2c---set-up-ssh-on-nixos)
 
 After you spin up NixOS on the system you will be hosting Satisfactory on. You will want to open the system and transfer the 3 files to it
 
@@ -82,7 +91,7 @@ You can do this with you favorite text editor.
 > Most text editing packages do not come installed by default in NixOS.
 > By default (in 24.05) `nano` is installed but `vi`/`vim` is not.
 >
-> If you need another text editor follow the guide in [REPO_ROOT/docs/nixos.md - Installing Packages on NixOS](../../docs/Nixos.md#installing-packages-on-nixos)
+> If you need another text editor follow the guide in [REPO_ROOT/docs/nixos.md - 2.b - Installing Packages on NixOS](../../docs/Nixos.md#2b---installing-packages-on-nixos)
 
 ```bash
 sudo nano /etc/nixos/configuration.nix
@@ -187,6 +196,8 @@ sudo systemctl status satisfactory
 
 - TODO add Output from fresh build
 
-## Read next?
+## 4 - Where to access the server
+
+## 5 - Read next?
 
 If you want an explanation of each NixOS config read the [Explaining-Nix-Config.md](Explaining-Nix-Config.md)

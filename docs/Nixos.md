@@ -2,24 +2,24 @@
 
 This is a collection of notes on NixOS and how to work with it.
 
-## Relative Folder Structure
+## 0 - Relative Folder Structure
 
 - [*root directory*](../README.md)
   - [/docs](./README.md)
     - [NixOS.md](Nixos.md) <------------ ***YOU ARE HERE***
 
-## Table of Contents
+## 1 - Table of Contents
 
-- [Relative Folder Structure](#relative-folder-structure)
-- [Table of Contents](#table-of-contents)
-- [Useful Notes](#useful-notes)
-  - [NixOS Text Editors](#nixos-text-editors)
-  - [Installing Packages on NixOS](#installing-packages-on-nixos)
-  - [Set up SSH on NixOS](#set-up-ssh-on-nixos)
+- [0 - Relative Folder Structure](#0---relative-folder-structure)
+- [1 - Table of Contents](#1---table-of-contents)
+- [2 - Useful Notes](#2---useful-notes)
+  - [2.a - NixOS Text Editors](#2a---nixos-text-editors)
+  - [2.b - Installing Packages on NixOS](#2b---installing-packages-on-nixos)
+  - [2.c - Set up SSH on NixOS](#2c---set-up-ssh-on-nixos)
 
-## Useful Notes
+## 2 - Useful Notes
 
-### NixOS Text Editors
+### 2.a - NixOS Text Editors
 
 Most text editing packages do not come installed by default in NixOS.
 By default (in 24.05) `nano` is installed but `vi`/`vim` is not.
@@ -39,7 +39,7 @@ vim: command not found
 
 As you can see, `nano` is the only editor in this list which is installed by default on NixOS.
 
-### Installing Packages on NixOS
+### 2.b - Installing Packages on NixOS
 
 If you want to install another package like `vim` you must add it to the list of installed packages.
 
@@ -144,7 +144,7 @@ reloading the following units: dbus.service
 $
 ```
 
-### Set up SSH on NixOS
+### 2.c - Set up SSH on NixOS
 
 1. Log in with an admin user
 2. Modify the `/etc/nixos/configuration.nix` to allow SSH
