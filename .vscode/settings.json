@@ -4,24 +4,43 @@
     "automagically",
     "autoremove",
     "betapassword",
+    "bootable",
+    "checkconf",
     "cmds",
+    "codel",
+    "coreutils",
     "dateext",
+    "dbus",
     "debconf",
     "delaycompress",
     "dpkg",
     "drwxr",
+    "DTLSHandlerComponent",
     "execer",
+    "FGDSIpNetDriver",
     "findutils",
+    "gnugrep",
     "HomeLab",
+    "inet",
     "journalctl",
+    "Malloc",
     "missingok",
     "multihome",
     "Nixos",
+    "noprefixroute",
+    "noqueue",
     "notifempty",
     "patchelf",
     "pkgs",
+    "polkit",
+    "proto",
+    "qdisc",
+    "qlen",
+    "resetup",
     "resholve",
+    "SIGABRT",
     "steamcmd",
+    "sysinit",
     "tmpfiles",
     "Valheim"
   ],
@@ -29,5 +48,8 @@
   "[markdown]": {
     "editor.tabSize": 2,
     "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
-  }
+  },
+  "cSpell.enableFiletypes": [
+    "nix"
+  ]
 }
