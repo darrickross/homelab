@@ -50,7 +50,7 @@
     "editor.tabSize": 2,
     "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
   },
-  "cSpell.enableFiletypes": [
-    "nix"
-  ]
+  "cSpell.enabledFileTypes": {
+    "nix": true,
+  },
 }
