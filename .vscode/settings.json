@@ -43,12 +43,12 @@
     "steamcmd",
     "sysinit",
     "tmpfiles",
-    "Valheim"
+    "Valheim",
   ],
   "files.eol": "\n",
   "[markdown]": {
     "editor.tabSize": 2,
-    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint",
   },
   "cSpell.enabledFileTypes": {
     "nix": true,
