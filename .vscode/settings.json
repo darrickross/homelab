@@ -50,6 +50,14 @@
     "editor.tabSize": 2,
     "editor.defaultFormatter": "DavidAnson.vscode-markdownlint",
   },
+  "[nix]": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+    "editor.defaultFormatter": "jnoortheen.nix-ide",
+  },
+  // Make sure to install nixfmt
+  // https://github.com/NixOS/nixfmt/releases
+  "nix.formatterPath": "nixfmt",
   "cSpell.enabledFileTypes": {
     "nix": true,
   },
