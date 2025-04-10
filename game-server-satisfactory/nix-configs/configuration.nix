@@ -61,6 +61,9 @@
     description = "architect";
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [ ];
+    openssh.authorizedKeys.keys = [
+      "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIKn9JcmQKEx2sVH7H4shJsrbQocxDF99Xn7P4fFJrDy3AAAABHNzaDo= Yubikey #0 20250221"
+    ];
   };
 
   # Allow unfree packages
