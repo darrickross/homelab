@@ -16,17 +16,24 @@ let
   #     system-ssh-port         = "22";
   # }
   secrets = import ./secrets.nix;
+
+  mtuSetting =
+    if secrets.system-ipv4-use-mtu then secrets.system-ipv4-mtu-value else null;
 in {
   # Enable and Allow SSH
   services.openssh.enable = true;
   networking.firewall.enable = true;
   networking.firewall.allowedTCPPorts = [ (lib.toInt secrets.system-ssh-port) ];
 
+  # Manage the network here
+  networking.networkmanager.enable = false;
+
   # Configure System with Static IP
+  networking.interfaces.eth0.useDHCP = false;
   networking.interfaces.eth0.ipv4.addresses = [{
     address = secrets.system-ipv4-address;
     prefixLength = secrets.system-ipv4-prefix;
-  }];
+  }] ++ lib.optional (mtuSetting != null) { mtu = mtuSetting; };
   # This uses eth0, you will want to check which device you are using on your system
   # Check using 'ip a' and looking for the name of the device you are changing the settings of
 
