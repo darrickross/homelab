@@ -1,0 +1,17 @@
+- name: Backup original proxmoxlib.js (if not already backed up)
+  copy:
+    remote_src: yes
+    src: /usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js
+    dest: /usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js.bak
+    force: no
+
+- name: Inject ignore-subscription patch
+  replace:
+    path: /usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js
+    regexp: '(function\(orig_cmd\) \{)'
+    replace: '\1\n    orig_cmd();\n    return;'
+
+- name: Restart the Proxmox web-UI service
+  service:
+    name: pveproxy
+    state: restarted

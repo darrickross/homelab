@@ -1,0 +1,11 @@
+---
+
+- hosts: all
+  become: true
+  roles:
+    - base
+
+- hosts: hypervisors_proxmox
+  become: true
+  roles:
+    - proxmox-ignore_license_popup
