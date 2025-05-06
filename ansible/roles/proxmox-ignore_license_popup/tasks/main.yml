@@ -1,17 +1,28 @@
-- name: Backup original proxmoxlib.js (if not already backed up)
+---
+- name: Ensure original proxmoxlib.js is backed up
   copy:
+    src: "{{ pve_js_path }}"
+    dest: "{{ pve_js_path }}{{ pve_js_backup_ext }}"
     remote_src: yes
-    src: /usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js
-    dest: /usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js.bak
     force: no
+  register: backup_js
+  # only back up once
+  changed_when: backup_js.changed
 
 - name: Inject ignore-subscription patch
+  # We will find the place where the check happens
+  # checked_command: function(orig_cmd) {     <---- Find this
+  #   orig_cmd();                             <---- Add this and...
+  #   return;                                 <---- Add this to short circuit check subscription function
+  #   Proxmox.Utils.API2Request(
+  #       {
+  #           url: '/nodes/localhost/subscription',
+  #           method: 'GET',
+  #           failure: function(response, opts) {
   replace:
-    path: /usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js
+    path: "{{ pve_js_path }}"
     regexp: '(function\(orig_cmd\) \{)'
     replace: '\1\n    orig_cmd();\n    return;'
+    backup: yes
+  notify: Restart pveproxy
 
-- name: Restart the Proxmox web-UI service
-  service:
-    name: pveproxy
-    state: restarted
