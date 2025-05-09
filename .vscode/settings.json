@@ -1,4 +1,7 @@
 {
+  "cSpell.enabledFileTypes": {
+    "nix": true
+  },
   "cSpell.words": [
     "autoclean",
     "automagically",
@@ -49,8 +52,5 @@
   "[markdown]": {
     "editor.tabSize": 2,
     "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
-  },
-  "cSpell.enabledFileTypes": {
-    "nix": true,
-  },
+  }
 }
