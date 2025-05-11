@@ -26,10 +26,15 @@
   #           url: '/nodes/localhost/subscription',
   #           method: 'GET',
   #           failure: function(response, opts) {
+  #
+  # Convert to
+  # checked_command: function(orig_cmd) {   // proxmox-ignore_license_popup
+  #         orig_cmd();                     // proxmox-ignore_license_popup
+  #         return;                         // proxmox-ignore_license_popup
   ansible.builtin.replace:
     path: "{{ pve_js_path }}"
     regexp: '^\s*(checked_command:\s*function\(orig_cmd\)\s*\{)\s*$'
-    replace: '\1 {{ proxmox_patch_tag }}\n    orig_cmd(); {{ proxmox_patch_tag }}\n    return; {{ proxmox_patch_tag }}'
+    replace: '\1\t{{ proxmox_patch_tag }}\n\torig_cmd();\t\t\t{{ proxmox_patch_tag }}\n\treturn;\t\t\t\t{{ proxmox_patch_tag }}'
     backup: yes
   when: patch_present.rc != 0
   notify: Restart pveproxy
