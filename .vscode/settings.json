@@ -47,6 +47,10 @@
     "tmpfiles",
     "Valheim"
   ],
+  "files.associations": {
+    "*plays.yml": "ansible",
+    "*init.yml": "yaml",
+  },
   "files.eol": "\n",
   "[markdown]": {
     "editor.tabSize": 2,
