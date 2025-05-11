@@ -35,6 +35,8 @@
     "pkgs",
     "polkit",
     "proto",
+    "proxmoxlib",
+    "pveproxy",
     "qdisc",
     "qlen",
     "resetup",

@@ -1,12 +1,19 @@
 ---
-- name: Ensure original proxmoxlib.js is backed up
-  copy:
+- name: Check if ignore-subscription patch is already present
+  ansible.builtin.shell: "grep -q '{{ proxmox_patch_tag }}' {{ pve_js_path }}"
+  register: patch_present
+  ignore_errors: true
+
+# Only run future tasks based on the result of patch_present.
+# If patch_present.rc != 0 make the change
+
+- name: Ensure original proxmoxlib.js is backed up (with timestamp)
+  ansible.builtin.copy:
     src: "{{ pve_js_path }}"
-    dest: "{{ pve_js_path }}{{ pve_js_backup_ext }}"
+    dest: "{{ pve_js_path }}.bak.{{ ansible_date_time.iso8601_basic }}"
     remote_src: yes
-    force: no
+  when: patch_present.rc != 0
   register: backup_js
-  # only back up once
   changed_when: backup_js.changed
 
 - name: Inject ignore-subscription patch
@@ -19,10 +26,11 @@
   #           url: '/nodes/localhost/subscription',
   #           method: 'GET',
   #           failure: function(response, opts) {
-  replace:
+  ansible.builtin.replace:
     path: "{{ pve_js_path }}"
-    regexp: '(function\(orig_cmd\) \{)'
-    replace: '\1\n    orig_cmd();\n    return;'
+    regexp: '^\s*(checked_command:\s*function\(orig_cmd\)\s*\{)\s*$'
+    replace: '\1 {{ proxmox_patch_tag }}\n    orig_cmd(); {{ proxmox_patch_tag }}\n    return; {{ proxmox_patch_tag }}'
     backup: yes
+  when: patch_present.rc != 0
   notify: Restart pveproxy
 
