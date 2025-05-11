@@ -38,4 +38,3 @@
     backup: yes
   when: patch_present.rc != 0
   notify: Restart pveproxy
-
