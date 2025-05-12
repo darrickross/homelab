@@ -1,0 +1,23 @@
+---
+- name: Deploy Proxmox no-subscription repo
+  ansible.builtin.template:
+    src: opensource-ceph.list.j2
+    dest: "{{ pve_apt_sources_dir }}"
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Refresh APT cache
+
+- name: Deploy Ceph no-subscription repo
+  ansible.builtin.template:
+    src: opensource-ceph.list.j2
+    dest: "{{ pve_apt_sources_dir }}"
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Refresh APT cache
+
+- name: Import Proxmox VE GPG key
+  ansible.builtin.apt_key:
+    url: "{{ proxmox_gpg_key_url }}"
+    state: present

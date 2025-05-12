@@ -1,0 +1,12 @@
+---
+galaxy_info:
+  author: your_name
+  description: Configure Proxmox VE “no-subscription” APT repository
+  license: MIT
+  min_ansible_version: "2.9"
+  platforms:
+    - name: Debian
+      versions:
+        - bullseye
+        - bookworm
+dependencies: []

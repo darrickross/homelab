@@ -21,3 +21,7 @@
         loop_var: repo_file_iter
       vars:
         repo_file: "{{ repo_file_iter }}"
+
+    - name: Set up opensource Repos
+      ansible.builtin.import_role:
+        name: proxmox-enable_opensource_repos
