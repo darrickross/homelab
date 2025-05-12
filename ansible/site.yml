@@ -2,5 +2,22 @@
 - name: Configure general Proxmox hypervisors
   hosts: hypervisors_proxmox
   become: true
-  roles:
-    - proxmox-ignore_license_popup
+
+  vars:
+    repo_files_to_disable:
+      - ceph.list
+      - pve-enterprise.list
+
+  tasks:
+    - name: Ignore license popup
+      ansible.builtin.import_role:
+        name: proxmox-ignore_license_popup
+
+    - name: Disable one enterprise repo at a time
+      ansible.builtin.include_role:
+        name: proxmox-disable_repo
+      loop: "{{ repo_files_to_disable }}"
+      loop_control:
+        loop_var: repo_file_iter
+      vars:
+        repo_file: "{{ repo_file_iter }}"
