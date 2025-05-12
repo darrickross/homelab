@@ -25,3 +25,7 @@
     - name: Set up opensource Repos
       ansible.builtin.import_role:
         name: proxmox-enable_opensource_repos
+
+    - name: Set up Proxmox 443 Proxy using nginx
+      ansible.builtin.import_role:
+        name: proxmox-nginx_proxy
