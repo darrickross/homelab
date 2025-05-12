@@ -1,6 +1,8 @@
 # Homelab/ansible
 
-TODO Clean up this README
+TODO:
+
+- Clean up this README
 
 Set up:
 
