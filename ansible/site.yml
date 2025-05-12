@@ -1,5 +1,6 @@
 ---
-- hosts: hypervisors_proxmox
+- name: Configure general Proxmox hypervisors
+  hosts: hypervisors_proxmox
   become: true
   roles:
     - proxmox-ignore_license_popup
