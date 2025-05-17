@@ -9,9 +9,10 @@
       - pve-enterprise.list
 
   tasks:
-    - name: Ensure GRUB updates the removable EFI loader
-      ansible.builtin.import_role:
-        name: debian-grub_update_removable
+    # TODO figure out a better way to handle this without uninstalling and reinstalling grub every time...
+    # - name: Ensure GRUB updates the removable EFI loader
+    #   ansible.builtin.import_role:
+    #     name: debian-grub_update_removable
 
     - name: Ensure Proxmox Version
       ansible.builtin.import_role:
