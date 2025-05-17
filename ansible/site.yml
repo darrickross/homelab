@@ -9,6 +9,10 @@
       - pve-enterprise.list
 
   tasks:
+    - name: Ensure GRUB updates the removable EFI loader
+      ansible.builtin.import_role:
+        name: debian-grub_update_removable
+
     - name: Ignore license popup
       ansible.builtin.import_role:
         name: proxmox-ignore_license_popup

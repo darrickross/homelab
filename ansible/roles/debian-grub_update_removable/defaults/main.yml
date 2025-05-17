@@ -1,0 +1,3 @@
+---
+# where your EFI system partition is normally mounted
+grub_update_removable_efi_mountpoint: /boot/efi

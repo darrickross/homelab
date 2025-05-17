@@ -6,6 +6,7 @@
     "autoremove",
     "betapassword",
     "bootable",
+    "BOOTX",
     "checkconf",
     "cmds",
     "codel",
@@ -26,6 +27,7 @@
     "journalctl",
     "Malloc",
     "missingok",
+    "mountpoint",
     "multihome",
     "Nixos",
     "noprefixroute",
@@ -43,11 +45,13 @@
     "qlen",
     "resetup",
     "resholve",
+    "selectattr",
     "SIGABRT",
     "steamcmd",
     "sysinit",
     "tmpfiles",
-    "Valheim"
+    "Valheim",
+    "vtype"
   ],
   "files.associations": {
     "*plays.yml": "ansible",
