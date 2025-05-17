@@ -1,3 +1,7 @@
+# ==============================================================================
+# Base Terraform
+# ==============================================================================
+
 # Local .terraform directories
 **/.terraform/*
 
@@ -33,6 +37,9 @@ override.tf.json
 .terraformrc
 terraform.rc
 
+# ==============================================================================
+# Some suggested thing others user
+# ==============================================================================
 # Pulled from https://github.com/ChristianLempa/homelab/blob/2da8eb8c158f5377008a30c07cb6a8c0ccf3b117/.gitignore
 
 # .vscode/**
