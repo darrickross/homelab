@@ -13,6 +13,10 @@
       ansible.builtin.import_role:
         name: debian-grub_update_removable
 
+    - name: Ensure Proxmox Version
+      ansible.builtin.import_role:
+        name: proxmox-upgrade
+
     - name: Ignore license popup
       ansible.builtin.import_role:
         name: proxmox-ignore_license_popup
