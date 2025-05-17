@@ -51,7 +51,7 @@
   ],
   "files.associations": {
     "*plays.yml": "ansible",
-    "*init.yml": "yaml",
+    "*init.yml": "yaml"
   },
   "files.eol": "\n",
   "[markdown]": {
@@ -59,6 +59,6 @@
     "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
   },
   "cSpell.enabledFileTypes": {
-    "nix": true,
-  },
+    "nix": true
+  }
 }
