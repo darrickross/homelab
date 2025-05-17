@@ -1,4 +1,6 @@
 {
+  "ansible.lightspeed.enabled": false,
+  "ansible.lightspeed.suggestions.enabled": false,
   "ansible.python.interpreterPath": "/bin/python3.11",
   "cSpell.words": [
     "autoclean",
