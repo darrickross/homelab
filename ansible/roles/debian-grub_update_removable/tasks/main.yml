@@ -1,0 +1,62 @@
+---
+- name: Compute GRUB-EFI package name
+  ansible.builtin.set_fact:
+    grub_pkg: "grub-efi-{{ 'amd64' if ansible_architecture == 'x86_64' else ansible_architecture }}"
+
+- name: Check if grub-efi would be upgraded by dist-upgrade
+  ansible.builtin.apt:
+    name: "{{ grub_pkg }}"
+    upgrade: dist
+    update_cache: false
+  check_mode: true
+  register: apt_check_grub
+  failed_when: false
+
+- name: Set flag when grub-efi is NOT scheduled to upgrade
+  ansible.builtin.set_fact:
+    efi_not_updated: "{{ not apt_check_grub.changed }}"
+
+- name: Update grub EFI recovery sector to update when the system is upgraded
+  when: efi_not_updated
+  block:
+    - name: Determine actual EFI mountpoint
+      ansible.builtin.set_fact:
+        actual_efi_mount: >-
+          {{
+            (ansible_mounts
+              | selectattr('mount','==', grub_update_removable_efi_mountpoint)
+              | map(attribute='mount')
+              | list
+            ).0
+            | default(grub_update_removable_efi_mountpoint)
+          }}
+
+    - name: Construct path to the removable loader
+      ansible.builtin.set_fact:
+        removable_loader: "{{ actual_efi_mount }}/EFI/BOOT/BOOTX64.efi"
+
+    - name: Check if removable EFI loader exists
+      ansible.builtin.stat:
+        path: "{{ removable_loader }}"
+      register: loader_stat
+
+    - name: Enable forcing of the removable EFI path in debconf
+      ansible.builtin.debconf:
+        name: "{{ grub_pkg }}"
+        question: grub2/force_efi_extra_removable
+        value: true
+        vtype: boolean
+      when: loader_stat.stat.exists
+
+    - name: "[Uninstall] Reinstall the GRUB-EFI package so it updates BOOTX64.efi"
+      ansible.builtin.apt:
+        name: "{{ grub_pkg }}"
+        state: absent
+      when: loader_stat.stat.exists
+
+    - name: "[Install] Reinstall the GRUB-EFI package so it updates BOOTX64.efi"
+      ansible.builtin.apt:
+        name: "{{ grub_pkg }}"
+        state: present
+        update_cache: true
+      when: loader_stat.stat.exists
