@@ -2,6 +2,9 @@
   "ansible.lightspeed.enabled": false,
   "ansible.lightspeed.suggestions.enabled": false,
   "ansible.python.interpreterPath": "/bin/python3.11",
+  "cSpell.enabledFileTypes": {
+    "nix": true
+  },
   "cSpell.words": [
     "autoclean",
     "automagically",
@@ -65,8 +68,5 @@
   "[markdown]": {
     "editor.tabSize": 2,
     "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
-  },
-  "cSpell.enabledFileTypes": {
-    "nix": true
   }
 }
