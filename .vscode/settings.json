@@ -10,6 +10,7 @@
     "automagically",
     "autoremove",
     "betapassword",
+    "blockinfile",
     "bootable",
     "BOOTX",
     "checkconf",

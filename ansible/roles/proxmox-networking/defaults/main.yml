@@ -11,3 +11,7 @@ ping_count: 4
 mtu_size_ip_header: 20
 mtu_size_icmp_header: 8
 ping_payload_size: "{{ (mtu_size - mtu_size_ip_header - mtu_size_icmp_header) }}"
+
+# Host File Mark
+peer_host_block_marker_start: "Peer Host Block Start"
+peer_host_block_marker_end: "Peer Host Block End"

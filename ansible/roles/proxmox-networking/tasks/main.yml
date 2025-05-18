@@ -13,3 +13,17 @@
     - Ping p2p
     - Ping primary gateway with MTU
     - Ping p2p with MTU
+
+- name: Ensure Peer Host Block in /etc/hosts
+  become: true
+  ansible.builtin.blockinfile:
+    path: /etc/hosts
+    create: true
+    backup: true
+    owner: root
+    group: root
+    mode: "0644"
+    marker_begin: "{{ peer_host_block_marker_start }}"
+    marker_end: "{{ peer_host_block_marker_end }}"
+    block: |
+      {{ p2p0_peer_address }} {{ peer_hostname }}.{{ peer_domain }} {{ peer_hostname }}
