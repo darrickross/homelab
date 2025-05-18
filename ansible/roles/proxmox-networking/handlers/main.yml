@@ -52,7 +52,7 @@
 - name: Ping p2p with MTU
   when:
     - ping_p2p_normal is defined
-    - not ping_p2p_normal.skipped
+    - ping_p2p_normal not skipped
   ansible.builtin.command:
     argv:
       - ping
