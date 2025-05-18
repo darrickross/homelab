@@ -1,0 +1,10 @@
+---
+- name: Deploy /etc/network/interfaces from template
+  become: true
+  ansible.builtin.template:
+    src: interfaces.j2
+    dest: "{{ interfaces_dest }}"
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Restart networking

@@ -23,11 +23,13 @@
     "dpkg",
     "drwxr",
     "DTLSHandlerComponent",
+    "endfor",
     "execer",
     "FGDSIpNetDriver",
     "findutils",
     "gnugrep",
     "HomeLab",
+    "iface",
     "inet",
     "journalctl",
     "Malloc",
@@ -58,6 +60,7 @@
     "sysinit",
     "tmpfiles",
     "Valheim",
+    "vmbr",
     "vtype"
   ],
   "files.associations": {

@@ -1,0 +1,7 @@
+---
+# Default variables; override in your playbook as needed
+mtu_size: 9000
+
+# Source/dest of interfaces file
+interfaces_dest: /etc/network/interfaces
+other_interfaces_src_dir: /etc/network/interfaces.d/*
