@@ -1,10 +1,17 @@
 {
+  "ansible.lightspeed.enabled": false,
+  "ansible.lightspeed.suggestions.enabled": false,
+  "ansible.python.interpreterPath": "/bin/python3.11",
+  "cSpell.enabledFileTypes": {
+    "nix": true
+  },
   "cSpell.words": [
     "autoclean",
     "automagically",
     "autoremove",
     "betapassword",
     "bootable",
+    "BOOTX",
     "checkconf",
     "cmds",
     "codel",
@@ -25,26 +32,38 @@
     "journalctl",
     "Malloc",
     "missingok",
+    "mountpoint",
     "multihome",
     "Nixos",
     "noprefixroute",
     "noqueue",
     "notifempty",
+    "opensource",
     "patchelf",
     "pihole",
+    "pipefail",
     "pkgs",
     "polkit",
     "proto",
+    "proxmoxlib",
+    "pveproxy",
+    "pveversion",
     "qdisc",
     "qlen",
     "resetup",
     "resholve",
+    "selectattr",
     "SIGABRT",
     "steamcmd",
     "sysinit",
     "tmpfiles",
-    "Valheim"
+    "Valheim",
+    "vtype"
   ],
+  "files.associations": {
+    "*plays.yml": "ansible",
+    "*init.yml": "yaml"
+  },
   "files.eol": "\n",
   "[markdown]": {
     "editor.tabSize": 2,
@@ -59,8 +78,5 @@
     "editor.tabSize": 2,
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "hashicorp.terraform"
-  },
-  "cSpell.enabledFileTypes": {
-    "nix": true,
   },
 }

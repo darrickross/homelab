@@ -1,0 +1,9 @@
+---
+# Directory where apt sources live
+pve_apt_sources_dir: "/etc/apt/sources.list.d"
+
+# Which OS version name
+pve_apt_codename: "{{ ansible_lsb.codename | default(ansible_distribution_release) | lower }}"
+
+# URL and component for the no-subscription repo
+proxmox_gpg_key_url: "https://enterprise.proxmox.com/debian/proxmox-release-{{ pve_apt_codename }}.gpg"
