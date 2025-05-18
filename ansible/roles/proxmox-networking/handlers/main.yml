@@ -17,6 +17,9 @@
   failed_when: ping_gateway_normal.rc != 0
 
 - name: Ping p2p
+  when:
+    - p2p0_interface is defined
+    - p2p0_interface | trim != ""
   ansible.builtin.command:
     argv:
       - ping
@@ -28,6 +31,7 @@
   failed_when: ping_p2p_normal.rc != 0
 
 - name: Ping primary gateway with MTU
+  when: ping_gateway_normal.rc != 0
   ansible.builtin.command:
     argv:
       - ping
@@ -46,6 +50,9 @@
   failed_when: ping_gateway_mtu.rc != 0
 
 - name: Ping p2p with MTU
+  when:
+    - ping_p2p_normal is defined
+    - not ping_p2p_normal.skipped
   ansible.builtin.command:
     argv:
       - ping

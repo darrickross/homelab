@@ -15,6 +15,9 @@
     - Ping p2p with MTU
 
 - name: Ensure Peer Host Block in /etc/hosts
+  when:
+    - p2p0_interface is defined
+    - p2p0_interface | trim != ""
   become: true
   ansible.builtin.blockinfile:
     path: /etc/hosts
