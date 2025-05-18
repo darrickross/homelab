@@ -9,6 +9,10 @@
       - pve-enterprise.list
 
   tasks:
+    - name: Apply Networking settings
+      ansible.builtin.include_role:
+        name: proxmox-networking
+
     # TODO figure out a better way to handle this without uninstalling and reinstalling grub every time...
     # - name: Ensure GRUB updates the removable EFI loader
     #   ansible.builtin.import_role:
