@@ -1,17 +1,19 @@
 {
-    "recommendations": [
-        "streetsidesoftware.code-spell-checker",
-        "moshfeu.compare-folders",
-        "fabiospampinato.vscode-diff",
-        "eamodio.gitlens",
-        "hashicorp.hcl",
-        "hashicorp.terraform",
-        "oderwat.indent-rainbow",
-        "davidanson.vscode-markdownlint",
-        "esbenp.prettier-vscode",
-        "foxundermoon.shell-format",
-        "timonwong.shellcheck",
-        "shardulm94.trailing-spaces",
-        "redhat.vscode-yaml"
-    ]
+  "recommendations": [
+    "streetsidesoftware.code-spell-checker",
+    "moshfeu.compare-folders",
+    "fabiospampinato.vscode-diff",
+    "eamodio.gitlens",
+    "hashicorp.hcl",
+    "hashicorp.terraform",
+    "oderwat.indent-rainbow",
+    "davidanson.vscode-markdownlint",
+    "esbenp.prettier-vscode",
+    "foxundermoon.shell-format",
+    "timonwong.shellcheck",
+    "shardulm94.trailing-spaces",
+    "redhat.vscode-yaml",
+    "redhat.ansible",
+    "wholroyd.jinja"
+  ]
 }
