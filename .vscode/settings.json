@@ -45,6 +45,7 @@
     "pihole",
     "pipefail",
     "pkgs",
+    "pointopoint",
     "polkit",
     "proto",
     "proxmoxlib",

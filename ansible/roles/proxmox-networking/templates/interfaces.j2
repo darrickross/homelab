@@ -18,8 +18,16 @@ iface {{ br }} inet static
     bridge-fd 0
     mtu {{ mtu_size }}
 
-{% for iface in sorted_ansible_interfaces if not ansible_facts[iface].active %}
+{% for iface in sorted_ansible_interfaces
+    if not ansible_facts[iface].active
+        and iface != p2p0_interface %}
 iface {{ iface }} inet manual
 
 {% endfor %}
+auto {{ p2p0_interface }}
+iface {{ p2p0_interface }} inet static
+    address {{ p2p0_host_address }}/{{ p2p0_host_prefix }}
+    pointopoint {{ p2p0_peer_address }}
+    mtu {{ p2p0_mtu }}
+
 source {{ other_interfaces_src_dir }}

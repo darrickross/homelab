@@ -5,3 +5,9 @@ mtu_size: 9000
 # Source/dest of interfaces file
 interfaces_dest: /etc/network/interfaces
 other_interfaces_src_dir: /etc/network/interfaces.d/*
+
+# Ping test stuff
+ping_count: 4
+mtu_size_ip_header: 20
+mtu_size_icmp_header: 8
+ping_payload_size: "{{ (mtu_size - mtu_size_ip_header - mtu_size_icmp_header) }}"

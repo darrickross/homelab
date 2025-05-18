@@ -7,4 +7,9 @@
     owner: root
     group: root
     mode: "0644"
-  notify: Restart networking
+  notify:
+    - Restart networking
+    - Ping primary gateway
+    - Ping p2p
+    - Ping primary gateway with MTU
+    - Ping p2p with MTU

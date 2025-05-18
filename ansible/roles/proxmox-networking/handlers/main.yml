@@ -4,3 +4,61 @@
   ansible.builtin.service:
     name: networking
     state: restarted
+
+- name: Ping primary gateway
+  ansible.builtin.command:
+    argv:
+      - ping
+      - -c
+      - "{{ ping_count }}"
+      - "{{ ansible_default_ipv4.gateway }}"
+  register: ping_gateway_normal
+  changed_when: false
+  failed_when: ping_gateway_normal.rc != 0
+
+- name: Ping p2p
+  ansible.builtin.command:
+    argv:
+      - ping
+      - -c
+      - "{{ ping_count }}"
+      - "{{ p2p0_peer_address }}"
+  register: ping_p2p_normal
+  changed_when: false
+  failed_when: ping_p2p_normal.rc != 0
+
+- name: Ping primary gateway with MTU
+  ansible.builtin.command:
+    argv:
+      - ping
+      # Number of tries
+      - -c
+      - "{{ ping_count }}"
+      # Don't Fragment
+      - -M
+      - do
+      # Payload size
+      - -s
+      - "{{ ping_payload_size }}"
+      - "{{ ansible_default_ipv4.gateway }}"
+  register: ping_gateway_mtu
+  changed_when: false
+  failed_when: ping_gateway_mtu.rc != 0
+
+- name: Ping p2p with MTU
+  ansible.builtin.command:
+    argv:
+      - ping
+      # Number of tries
+      - -c
+      - "{{ ping_count }}"
+      # Don't Fragment
+      - -M
+      - do
+      # Payload size
+      - -s
+      - "{{ ping_payload_size }}"
+      - "{{ p2p0_peer_address }}"
+  register: ping_p2p0_mtu
+  changed_when: false
+  failed_when: ping_p2p0_mtu.rc != 0
