@@ -29,12 +29,16 @@
     "gnugrep",
     "HomeLab",
     "inet",
+    "internationalisation",
     "journalctl",
+    "keymap",
     "Malloc",
     "missingok",
     "mountpoint",
     "multihome",
+    "networkmanager",
     "Nixos",
+    "nixpkgs",
     "noprefixroute",
     "noqueue",
     "notifempty",
@@ -65,8 +69,16 @@
     "*init.yml": "yaml"
   },
   "files.eol": "\n",
+  // Make sure to install nixfmt
+  // https://github.com/NixOS/nixfmt/releases
+  "nix.formatterPath": "nixfmt",
   "[markdown]": {
     "editor.tabSize": 2,
     "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+  },
+  "[nix]": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+    "editor.defaultFormatter": "jnoortheen.nix-ide"
   }
 }
