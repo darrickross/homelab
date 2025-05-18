@@ -2,6 +2,10 @@
 # Default variables; override in your playbook as needed
 mtu_size: 9000
 
+# Priority level for the interfaces (lower value = higher Priority)
+iface_bridge_metric: 100
+iface_p2p_metric: 50
+
 # Source/dest of interfaces file
 interfaces_dest: /etc/network/interfaces
 other_interfaces_src_dir: /etc/network/interfaces.d/*
