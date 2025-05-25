@@ -1,0 +1,44 @@
+---
+- name: Configure general Proxmox hypervisors
+  hosts: hypervisors_proxmox
+  become: true
+
+  vars:
+    repo_files_to_disable:
+      - ceph.list
+      - pve-enterprise.list
+
+  tasks:
+    - name: Apply Networking settings
+      ansible.builtin.include_role:
+        name: proxmox-networking
+
+    # TODO figure out a better way to handle this without uninstalling and reinstalling grub every time...
+    # - name: Ensure GRUB updates the removable EFI loader
+    #   ansible.builtin.import_role:
+    #     name: debian-grub_update_removable
+
+    - name: Ensure Proxmox Version
+      ansible.builtin.import_role:
+        name: proxmox-upgrade
+
+    - name: Ignore license popup
+      ansible.builtin.import_role:
+        name: proxmox-ignore_license_popup
+
+    - name: Disable one enterprise repo at a time
+      ansible.builtin.include_role:
+        name: proxmox-disable_repo
+      loop: "{{ repo_files_to_disable }}"
+      loop_control:
+        loop_var: repo_file_iter
+      vars:
+        repo_file: "{{ repo_file_iter }}"
+
+    - name: Set up opensource Repos
+      ansible.builtin.import_role:
+        name: proxmox-enable_opensource_repos
+
+    - name: Set up Proxmox 443 Proxy using nginx
+      ansible.builtin.import_role:
+        name: proxmox-nginx_proxy

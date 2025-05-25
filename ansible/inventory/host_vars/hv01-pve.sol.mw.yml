@@ -1,0 +1,7 @@
+p2p0_interface: eno4
+p2p0_host_prefix: 31
+p2p0_host_address: 192.168.255.255
+p2p0_peer_address: 192.168.255.254
+p2p0_mtu: 9000
+peer_hostname: hv00-pve
+peer_domain: sol.mw

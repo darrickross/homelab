@@ -1,11 +1,19 @@
 {
+  "ansible.lightspeed.enabled": false,
+  "ansible.lightspeed.suggestions.enabled": false,
+  "ansible.python.interpreterPath": "/bin/python3.11",
+  "cSpell.enabledFileTypes": {
+    "nix": true
+  },
   "cSpell.words": [
     "ABSLOG",
     "autoclean",
     "automagically",
     "autoremove",
     "betapassword",
+    "blockinfile",
     "bootable",
+    "BOOTX",
     "checkconf",
     "cmds",
     "codel",
@@ -17,44 +25,70 @@
     "dpkg",
     "drwxr",
     "DTLSHandlerComponent",
+    "endfor",
     "execer",
     "FGDSIpNetDriver",
     "findutils",
     "gnugrep",
     "HomeLab",
+    "iface",
     "inet",
+    "internationalisation",
     "journalctl",
+    "keymap",
     "Malloc",
     "missingok",
+    "mountpoint",
     "multihome",
+    "networkmanager",
     "Nixos",
+    "nixpkgs",
     "noprefixroute",
     "noqueue",
     "notifempty",
+    "opensource",
     "patchelf",
+    "pihole",
+    "pipefail",
     "pkgs",
+    "pointopoint",
     "polkit",
     "proto",
+    "proxmoxlib",
+    "pveproxy",
+    "pveversion",
     "qdisc",
     "qlen",
     "Remappable",
     "resetup",
     "resholve",
     "saveddirsuffix",
+    "selectattr",
     "SIGABRT",
     "steamcmd",
     "sysinit",
     "tmpfiles",
-    "Valheim"
+    "Valheim",
+    "vmbr",
+    "vtype"
   ],
+  "files.associations": {
+    "*plays.yml": "ansible",
+    "*init.yml": "yaml"
+  },
   "files.eol": "\n",
+  // Make sure to install nixfmt
+  // https://github.com/NixOS/nixfmt/releases
+  "nix.formatterPath": "nixfmt",
   "[markdown]": {
     "editor.detectIndentation": false,
     "editor.insertSpaces": true,
     "editor.tabSize": 2,
     "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
   },
-  "cSpell.enableFiletypes": [
-    "nix"
-  ]
+  "[nix]": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+    "editor.defaultFormatter": "jnoortheen.nix-ide"
+  }
 }
