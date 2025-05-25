@@ -1,0 +1,37 @@
+{% set br = ansible_default_ipv4.alias %}
+{% set sorted_ansible_interfaces = ansible_interfaces | sort %}
+auto lo
+iface lo inet loopback
+
+{% for iface in ansible_facts[br].interfaces %}
+auto {{ iface }}
+iface {{ iface }} inet manual
+    mtu {{ mtu_size }}
+
+{% endfor %}
+auto {{ br }}
+iface {{ br }} inet static
+    address {{ ansible_default_ipv4.address }}/{{ ansible_default_ipv4.prefix }}
+    gateway {{ ansible_default_ipv4.gateway }}
+    bridge-ports {{ ansible_facts[br].interfaces | join(' ') }}
+    bridge-stp {{ 'on' if ansible_facts[br].stp | default(false) else 'off' }}
+    bridge-fd 0
+    mtu {{ mtu_size }}
+    metric {{ iface_bridge_metric }}
+
+{% for iface in sorted_ansible_interfaces
+    if not ansible_facts[iface].active
+        and iface != p2p0_interface %}
+iface {{ iface }} inet manual
+
+{% endfor %}
+{% if p2p0_interface is defined %}
+auto {{ p2p0_interface }}
+iface {{ p2p0_interface }} inet static
+    address {{ p2p0_host_address }}/{{ p2p0_host_prefix }}
+    pointopoint {{ p2p0_peer_address }}
+    mtu {{ p2p0_mtu }}
+    metric {{ iface_p2p_metric }}
+
+{% endif %}
+source {{ other_interfaces_src_dir }}

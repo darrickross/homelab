@@ -1,18 +1,22 @@
 ---
+# Flush anything the has happened before
 - name: Flush handlers
   ansible.builtin.meta: flush_handlers
 
+# Any task that might install or upgrade nginx must notify the handler
 - name: Install nginx
   ansible.builtin.apt:
     name: nginx
     state: present
     update_cache: true
+  notify: Restart nginx
 
 - name: Ensure nginx is enabled and running
   ansible.builtin.service:
     name: nginx
     state: started
     enabled: true
+  notify: Restart nginx
 
 - name: Remove default site
   ansible.builtin.file:
@@ -35,15 +39,3 @@
     dest: "{{ nginx_conf_enabled }}"
     state: link
   notify: Restart nginx
-
-- name: Test nginx configuration
-  ansible.builtin.command: nginx -t
-  register: nginx_test
-  failed_when: nginx_test.rc != 0
-  changed_when: false
-
-- name: Reload nginx if config is OK
-  ansible.builtin.service:
-    name: nginx
-    state: reloaded
-  when: nginx_test.rc == 0

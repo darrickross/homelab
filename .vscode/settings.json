@@ -10,6 +10,7 @@
     "automagically",
     "autoremove",
     "betapassword",
+    "blockinfile",
     "bootable",
     "BOOTX",
     "checkconf",
@@ -23,18 +24,24 @@
     "dpkg",
     "drwxr",
     "DTLSHandlerComponent",
+    "endfor",
     "execer",
     "FGDSIpNetDriver",
     "findutils",
     "gnugrep",
     "HomeLab",
+    "iface",
     "inet",
+    "internationalisation",
     "journalctl",
+    "keymap",
     "Malloc",
     "missingok",
     "mountpoint",
     "multihome",
+    "networkmanager",
     "Nixos",
+    "nixpkgs",
     "noprefixroute",
     "noqueue",
     "notifempty",
@@ -43,6 +50,7 @@
     "pihole",
     "pipefail",
     "pkgs",
+    "pointopoint",
     "polkit",
     "proto",
     "proxmoxlib",
@@ -58,6 +66,7 @@
     "sysinit",
     "tmpfiles",
     "Valheim",
+    "vmbr",
     "vtype"
   ],
   "files.associations": {
@@ -65,9 +74,17 @@
     "*init.yml": "yaml"
   },
   "files.eol": "\n",
+  // Make sure to install nixfmt
+  // https://github.com/NixOS/nixfmt/releases
+  "nix.formatterPath": "nixfmt",
   "[markdown]": {
     "editor.tabSize": 2,
     "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+  },
+  "[nix]": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+    "editor.defaultFormatter": "jnoortheen.nix-ide"
   },
   "[terraform]": {
     "editor.tabSize": 2,
