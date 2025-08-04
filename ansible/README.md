@@ -19,7 +19,8 @@ A collection of Ansible playbooks and inventories to provision and maintain a ho
 2. Verify you can SSH into each host defined in `ansible/inventory/hosts.yml`.
 
 > [!IMPORTANT]
-> If ssh into the host
+> If SSH-ing into a host requires a password protected SSH key (including hardware keys),
+> you will likely not get a prompt to type passwords after the first host.
 
 ## Usage
 
