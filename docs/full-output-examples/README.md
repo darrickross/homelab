@@ -2,7 +2,7 @@
 
 A collection of full output examples to compare to.
 
-## Relative Folder Structure
+## 0 - Relative Folder Structure
 
 - [*root directory*](../../README.md)
   - [/docs](../README.md)
