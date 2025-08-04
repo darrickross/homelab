@@ -13,10 +13,10 @@ This is a guide to create a web server certificate signed by a Root CA on Window
       - [generate-remote-desktop-certificate.md](./generate-remote-desktop-certificate.md)
         - Guide to creating a new `.pfx` (PKCS12) bundle used as a remote desktop certificate
 
-## Table of Contents
+## 1 - Table of Contents
 
-- [Repository Navigation Guide](#repository-navigation-guide)
-- [Table of Contents](#table-of-contents)
+- [Repository Navigation Guide](#0---relative-folder-structure)
+- [Table of Contents](#1---table-of-contents)
 - [Pre-requirements](#pre-requirements)
   - [Requires Windows Server Role](#requires-windows-server-role)
   - [Enable Certificate Template for Web Server](#enable-certificate-template-for-web-server)
