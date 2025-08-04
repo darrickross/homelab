@@ -6,7 +6,7 @@ This is a collection of notes on NixOS and how to work with it.
 
 - [*root directory*](../README.md)
   - [/docs](./README.md)
-    - [NixOS.md](Nixos.md) <------------ ***YOU ARE HERE***
+    - [Nixos.md](Nixos.md) <------------ ***YOU ARE HERE***
 
 ## 1 - Table of Contents
 
