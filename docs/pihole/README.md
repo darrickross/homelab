@@ -2,6 +2,13 @@
 
 This guide walks you through installing Pi-hole using the standard installer and then configuring a custom SSL certificate.
 
+## 0 - Relative Folder Structure
+
+- [*root directory*](../README.md)
+  - [/docs](./README.md)
+    - [pihole](README.md)
+      - [README.md](README.md) <------------ ***YOU ARE HERE***
+
 ## 1. Standard Installation
 
 Follow the official installation guide available here:
