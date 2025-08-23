@@ -102,5 +102,15 @@
     "editor.insertSpaces": true,
     "editor.tabSize": 2,
     "editor.defaultFormatter": "jnoortheen.nix-ide"
+  },
+  "[terraform]": {
+    "editor.tabSize": 2,
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "hashicorp.terraform"
+  },
+  "[terraform-vars]": {
+    "editor.tabSize": 2,
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "hashicorp.terraform"
   }
 }
