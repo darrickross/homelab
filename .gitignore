@@ -44,6 +44,17 @@ terraform.rc
 .ansible/*
 
 # ==============================================================================
+# Base Nixos
+# ==============================================================================
+
+# Ignore build outputs from performing a nix-build or `nix build` command
+result
+result-*
+
+# Ignore automatically generated direnv output
+.direnv
+
+# ==============================================================================
 # Some suggested thing others user
 # ==============================================================================
 # Pulled from https://github.com/ChristianLempa/homelab/blob/2da8eb8c158f5377008a30c07cb6a8c0ccf3b117/.gitignore
