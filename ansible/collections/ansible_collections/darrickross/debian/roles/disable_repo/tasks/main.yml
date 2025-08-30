@@ -1,0 +1,24 @@
+---
+- name: "Ensure var 'repo_file' is provided"
+  ansible.builtin.assert:
+    that:
+      - repo_file is defined
+      - repo_file | length > 0
+    fail_msg: >
+      You must supply `repo_file` to debian.disable_repo,
+      e.g. `vars: repo_file: pve-enterprise.list`
+
+- name: "Stat enterprise repo: '{{ repo_file }}'"
+  ansible.builtin.stat:
+    path: "{{ disable_repo_apt_sources_dir }}/{{ repo_file }}"
+  register: repo_stat
+
+- name: "If exists, Rename enterprise repo: '{{ repo_file }}' "
+  ansible.builtin.command: >
+    mv {{ disable_repo_apt_sources_dir }}/{{ repo_file }}
+      {{ disable_repo_apt_sources_dir }}/{{ repo_file }}.disabled
+  args:
+    removes: "{{ disable_repo_apt_sources_dir }}/{{ repo_file }}"
+    creates: "{{ disable_repo_apt_sources_dir }}/{{ repo_file }}.disabled"
+  when: repo_stat.stat.exists
+  notify: Refresh APT cache

@@ -1,0 +1,17 @@
+---
+galaxy_info:
+  author: darrickross
+  description: Upgrade Proxmox to a specific version
+  license: MIT
+
+  min_ansible_version: "2.9"
+
+  namespace: darrickross
+
+  platforms:
+    - name: Debian
+      versions:
+        - bookworm # Debian 12 / Proxmox VE 8
+
+dependencies:
+  - enable_opensource_repos

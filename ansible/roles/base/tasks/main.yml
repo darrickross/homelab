@@ -1,4 +1,4 @@
 - name: Add my SSH Key
-  authorized_key:
+  ansible.posix.authorized_key:
     user: itsjustmech
     key: "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIKn9JcmQKEx2sVH7H4shJsrbQocxDF99Xn7P4fFJrDy3AAAABHNzaDo= Primary Yubikey SSH Key - Added by Ansible"

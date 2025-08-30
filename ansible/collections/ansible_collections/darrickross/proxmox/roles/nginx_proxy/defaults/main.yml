@@ -1,0 +1,12 @@
+---
+# Default variables
+
+nginx_proxy_proxmox_default_port: "8006"
+
+nginx_proxy_proxmox_upstream: "127.0.0.1:{{ nginx_proxy_proxmox_default_port }}"
+
+nginx_proxy_ssl_certificate: "/etc/pve/local/pveproxy-ssl.pem"
+nginx_proxy_ssl_certificate_key: "/etc/pve/local/pveproxy-ssl.key"
+
+nginx_proxy_site_available_conf: "/etc/nginx/sites-available/{{ ansible_fqdn }}.conf"
+nginx_proxy_site_enabled_conf: "/etc/nginx/sites-enabled/{{ ansible_fqdn }}.conf"
