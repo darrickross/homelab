@@ -1,13 +1,13 @@
 ---
-- name: Restart nginx
-  block:
-    - name: Test nginx configuration
-      ansible.builtin.command: nginx -t
-      register: nginx_test
-      failed_when: nginx_test.rc != 0
-      changed_when: false
+- name: Test nginx configuration
+  listen: Restart nginx
+  ansible.builtin.command: nginx -t
+  register: nginx_test
+  failed_when: nginx_test.rc != 0
+  changed_when: false
 
-    - name: Reload nginx
-      ansible.builtin.service:
-        name: nginx
-        state: reloaded
+- name: Reload nginx
+  listen: Restart nginx
+  ansible.builtin.service:
+    name: nginx
+    state: reloaded

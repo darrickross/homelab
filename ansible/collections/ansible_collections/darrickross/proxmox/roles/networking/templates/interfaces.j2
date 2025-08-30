@@ -21,16 +21,16 @@ iface {{ br }} inet static
 
 {% for iface in sorted_ansible_interfaces
     if not ansible_facts[iface].active
-        and iface != p2p0_interface %}
+        and iface != networking_p2p0_interface %}
 iface {{ iface }} inet manual
 
 {% endfor %}
-{% if p2p0_interface is defined %}
-auto {{ p2p0_interface }}
-iface {{ p2p0_interface }} inet static
-    address {{ p2p0_host_address }}/{{ p2p0_host_prefix }}
-    pointopoint {{ p2p0_peer_address }}
-    mtu {{ p2p0_mtu }}
+{% if networking_p2p0_interface is defined %}
+auto {{ networking_p2p0_interface }}
+iface {{ networking_p2p0_interface }} inet static
+    address {{ networking_p2p0_host_address }}/{{ networking_p2p0_host_prefix }}
+    pointopoint {{ networking_p2p0_peer_address }}
+    mtu {{ networking_p2p0_mtu }}
     metric {{ networking_iface_p2p_metric }}
 
 {% endif %}
