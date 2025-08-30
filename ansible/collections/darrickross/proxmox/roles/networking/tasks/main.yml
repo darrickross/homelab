@@ -1,0 +1,32 @@
+---
+- name: Deploy /etc/network/interfaces from template
+  become: true
+  ansible.builtin.template:
+    src: interfaces.j2
+    dest: "{{ networking_interfaces_dest }}"
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - Restart networking
+    - Ping primary gateway
+    - Ping p2p
+    - Ping primary gateway with MTU
+    - Ping p2p with MTU
+
+- name: Ensure Peer Host Block in /etc/hosts
+  when:
+    - p2p0_interface is defined
+    - p2p0_interface | trim != ""
+  become: true
+  ansible.builtin.blockinfile:
+    path: /etc/hosts
+    create: true
+    backup: true
+    owner: root
+    group: root
+    mode: "0644"
+    marker_begin: "{{ networking_peer_host_block_marker_start }}"
+    marker_end: "{{ networking_peer_host_block_marker_end }}"
+    block: |
+      {{ p2p0_peer_address }} {{ peer_hostname }}.{{ peer_domain }} {{ peer_hostname }}
