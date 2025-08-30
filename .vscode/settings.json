@@ -25,6 +25,7 @@
     "certlm.msc",
     "certsrv.msc",
     "checkconf",
+    "cliconf",
     "cmds",
     "codel",
     "coreutils",
@@ -33,6 +34,7 @@
     "debconf",
     "delaycompress",
     "direnv",
+    "distro",
     "dpkg",
     "drwxr",
     "DTLSHandlerComponent",
@@ -45,15 +47,19 @@
     "gnugrep",
     "homelab",
     "HomeLab",
+    "httpapi",
     "iface",
     "inet",
     "internationalisation",
     "journalctl",
     "keymap",
+    "libpve",
+    "listchanges",
     "Malloc",
     "missingok",
     "mountpoint",
     "multihome",
+    "netconf",
     "networkmanager",
     "Nixos",
     "nixpkgs",
@@ -100,6 +106,18 @@
   // Make sure to install nixfmt
   // https://github.com/NixOS/nixfmt/releases
   "nix.formatterPath": "nixfmt",
+  "[ansible]": {
+    "editor.defaultFormatter": "redhat.ansible",
+    "editor.detectIndentation": true,
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+    "editor.quickSuggestions": {
+      "comments": true,
+      "other": true,
+      "strings": true
+    },
+    "editor.autoIndent": "advanced"
+  },
   "[markdown]": {
     "editor.tabSize": 2,
     "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"

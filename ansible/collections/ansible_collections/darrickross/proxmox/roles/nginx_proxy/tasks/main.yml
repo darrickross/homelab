@@ -1,0 +1,41 @@
+---
+# Flush anything the has happened before
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers
+
+# Any task that might install or upgrade nginx must notify the handler
+- name: Install nginx
+  ansible.builtin.apt:
+    name: nginx
+    state: present
+    update_cache: true
+  notify: Restart nginx
+
+- name: Ensure nginx is enabled and running
+  ansible.builtin.service:
+    name: nginx
+    state: started
+    enabled: true
+  notify: Restart nginx
+
+- name: Remove default site
+  ansible.builtin.file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+  notify: Restart nginx
+
+- name: Deploy Proxmox reverse-proxy config
+  ansible.builtin.template:
+    src: proxmox.conf.j2
+    dest: "{{ nginx_proxy_site_available_conf }}"
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Restart nginx
+
+- name: Enable Proxmox site
+  ansible.builtin.file:
+    src: "{{ nginx_proxy_site_available_conf }}"
+    dest: "{{ nginx_proxy_site_enabled_conf }}"
+    state: link
+  notify: Restart nginx
