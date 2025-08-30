@@ -42,3 +42,7 @@
     - name: Set up Proxmox 443 Proxy using nginx
       ansible.builtin.import_role:
         name: darrickross.proxmox.nginx_proxy
+
+    - name: Set up unattended upgrades
+      ansible.builtin.import_role:
+        name: darrickross.proxmox.unattended_upgrades

@@ -1,0 +1,18 @@
+---
+galaxy_info:
+  author: darrickross
+  description: "Configure unattended-upgrades on Proxmox VE nodes."
+  license: MIT
+
+  min_ansible_version: "2.18"
+
+  role_name: proxmox_unattended_upgrades
+  namespace: darrickross
+
+  platforms:
+    - name: Debian
+      versions:
+        - bookworm # Debian 12 / Proxmox VE 8
+
+dependencies:
+  - role: darrickross.proxmox.enable_opensource_repos

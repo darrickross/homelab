@@ -1,0 +1,40 @@
+// Managed by Ansible
+
+Unattended-Upgrade::Origins-Pattern {
+{% for oo in unattended_upgrades_allowed_origins_patterns %}
+        "{{ oo }}";
+{% endfor %}
+};
+
+Unattended-Upgrade::Package-Blacklist {
+{% for pp in unattended_upgrades_package_blacklist_patterns %}
+        "{{ pp }}";
+{% endfor %}
+};
+
+{% if unattended_upgrades_mail|length > 0 %}
+// Email reports
+Unattended-Upgrade::Mail "{{ unattended_upgrades_mail }}";
+Unattended-Upgrade::MailOnlyOnError "{{ unattended_upgrades_mail_only_on_error | ternary("true","false") }}";
+{% endif %}
+
+Unattended-Upgrade::AutoFixInterruptedDpkg "true";
+
+Unattended-Upgrade::Remove-Unused-Dependencies "{{ unattended_upgrades_remove_unused_deps | ternary("true","false") }}";
+Unattended-Upgrade::Remove-New-Unused-Dependencies "{{ unattended_upgrades_remove_new_unused_deps | ternary("true","false") }}";
+
+Unattended-Upgrade::Automatic-Reboot "{{ unattended_upgrades_automatic_reboot | ternary("true","false") }}";
+Unattended-Upgrade::Automatic-Reboot-Time "{{ unattended_upgrades_automatic_reboot_time }}";
+Unattended-Upgrade::Automatic-Reboot-WithUsers "{{ unattended_upgrades_automatic_reboot_with_users | ternary("true","false") }}";
+
+Unattended-Upgrade::MinimalSteps "{{ unattended_upgrades_minimal_steps | ternary("true","false") }}";
+
+Unattended-Upgrade::Allow-downgrades "false";
+Unattended-Upgrade::Allow-Unevaluated-Repositories "false";
+
+Unattended-Upgrade::Skip-Updates-On-Metered-Connections "true";
+Unattended-Upgrade::OnlyOnACPower "true";
+
+Unattended-Upgrade::Verbose "0";
+
+Unattended-Upgrade::DevRelease "auto";

@@ -1,0 +1,74 @@
+---
+- name: Ensure required packages
+  ansible.builtin.apt:
+    name: "{{ unattended_upgrades_proxmox_packages }}"
+    state: present
+    update_cache: true
+  when: ansible_facts.os_family == "Debian"
+
+- name: Deploy /etc/apt/apt.conf.d/99unattended-upgrades
+  ansible.builtin.template:
+    src: 99unattended-upgrades.j2
+    dest: /etc/apt/apt.conf.d/99unattended-upgrades
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart unattended-upgrades
+
+- name: Deploy /etc/apt/apt.conf.d/99auto-upgrades
+  ansible.builtin.template:
+    src: 99auto-upgrades.j2
+    dest: /etc/apt/apt.conf.d/99auto-upgrades
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart unattended-upgrades
+
+- name: Enable unattended-upgrades timer if present
+  ansible.builtin.systemd:
+    name: unattended-upgrades.timer
+    enabled: true
+    state: started
+  register: uu_timer
+  failed_when: false
+
+- name: Enable apt-daily-upgrade timer if present
+  ansible.builtin.systemd:
+    name: apt-daily-upgrade.timer
+    enabled: true
+    state: started
+  register: adu_timer
+  failed_when: false
+
+- name: Show timers status (debug only when present)
+  ansible.builtin.debug:
+    msg:
+      - "unattended-upgrades.timer: {{ uu_timer is defined and (uu_timer.status | default({})).ActiveState | default('unknown') }}"
+      - "apt-daily-upgrade.timer: {{ adu_timer is defined and (adu_timer.status | default({})).ActiveState | default('unknown') }}"
+  when: uu_timer is defined or adu_timer is defined
+
+- name: Dry-run unattended-upgrade (This can hang for ~90 seconds its normal)
+  ansible.builtin.command: unattended-upgrade -d --dry-run
+  register: uu_dry
+  changed_when: false
+  failed_when: false  # evaluate in next task
+
+- name: Assert dry run is clean
+  ansible.builtin.assert:
+    that:
+      - uu_dry.rc == 0
+      - "'An error occurred' not in uu_dry.stdout"
+      - "'Traceback' not in uu_dry.stdout"
+      - "'ValueError' not in uu_dry.stdout"
+      - "'Exception' not in uu_dry.stdout"
+      - "'An error occurred' not in uu_dry.stderr"
+      - "'Traceback' not in uu_dry.stderr"
+      - "'ValueError' not in uu_dry.stderr"
+      - "'Exception' not in uu_dry.stderr"
+    fail_msg: |
+      unattended-upgrade dry-run failed or logged errors.
+      rc={{ uu_dry.rc }}
+      --- stdout ---
+      {{ uu_dry.stdout }}
+      --- stderr ---
+      {{ uu_dry.stderr }}
