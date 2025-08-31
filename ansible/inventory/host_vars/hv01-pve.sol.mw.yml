@@ -1,7 +1,7 @@
 networking_p2p0_interface: eno4
-networking_p2p0_host_prefix: 31
+# networking_p2p0_host_prefix: Set in hosts.yml
 networking_p2p0_host_address: 192.168.255.255
 networking_p2p0_peer_address: 192.168.255.254
-networking_p2p0_mtu: 9000
+# networking_p2p0_mtu: Set in hosts.yml
 networking_peer_hostname: hv00-pve
-networking_peer_domain: sol.mw
+# networking_peer_domain: Set in hosts.yml
