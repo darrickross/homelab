@@ -1,3 +1,4 @@
+# handlers/main.yml
 ---
 # Handler: safer than a hard restart on Proxmox/ifupdown2
 - name: Reload networking with ifreload
