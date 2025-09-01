@@ -17,10 +17,6 @@
       register: interfaces_template
       notify:
         - Reload networking
-        - Ping primary gateway
-        - Ping p2p
-        - Ping primary gateway with MTU
-        - Ping p2p with MTU
 
   rescue:
     - name: Restore last known good interfaces if we changed it
@@ -46,6 +42,85 @@
       ansible.builtin.fail:
         msg: "Invalid or unsafe interfaces config. Restored previous file."
 
+# ==============================================================================
+# Run ping tests to make sure settings are good
+# ==============================================================================
+
+- name: Ping Verification
+  block:
+    - name: Detect P2P presence
+      ansible.builtin.set_fact:
+        p2p_present: "{{ ((networking_p2p0_interface | default(p2p0_interface | default(''))) | trim) != '' }}"
+
+    - name: Ping primary gateway
+      ansible.builtin.command:
+        argv:
+          - ping
+          - -c
+          - "{{ networking_ping_count }}"
+          - "{{ ansible_default_ipv4.gateway }}"
+      register: ping_gateway_normal
+      changed_when: false
+      failed_when: false
+
+    - name: Ping p2p
+      when: p2p_present
+      ansible.builtin.command:
+        argv:
+          - ping
+          - -c
+          - "{{ networking_ping_count }}"
+          - "{{ p2p0_peer_address }}"
+      register: ping_p2p_normal
+      changed_when: false
+      failed_when: false
+
+    - name: Ping primary gateway with MTU
+      ansible.builtin.command:
+        argv:
+          - ping
+          # Number of tries
+          - -c
+          - "{{ networking_ping_count }}"
+          # Don't Fragment
+          - -M
+          - do
+          # Payload size
+          - -s
+          - "{{ networking_ping_payload_size }}"
+          - "{{ ansible_default_ipv4.gateway }}"
+      register: ping_gateway_mtu
+      changed_when: false
+      failed_when: false
+
+    - name: Ping p2p with MTU
+      when: p2p_present
+      ansible.builtin.command:
+        argv:
+          - ping
+          # Number of tries
+          - -c
+          - "{{ networking_ping_count }}"
+          # Don't Fragment
+          - -M
+          - do
+          # Payload size
+          - -s
+          - "{{ networking_ping_payload_size }}"
+          - "{{ p2p0_peer_address }}"
+      register: ping_p2p0_mtu
+      changed_when: false
+      failed_when: false
+
+    - name: Assert all ping tests succeeded
+      ansible.builtin.assert:
+        that:
+          - ping_gateway_normal.rc == 0
+          - ping_gateway_mtu.rc == 0
+          - not p2p_present or ping_p2p_normal.rc == 0
+          - not p2p_present or ping_p2p0_mtu.rc == 0
+        fail_msg: "One or more ping tests failed."
+        success_msg: "All applicable ping tests passed."
 
 - name: Ensure Peer Host Block in /etc/hosts
   when:
