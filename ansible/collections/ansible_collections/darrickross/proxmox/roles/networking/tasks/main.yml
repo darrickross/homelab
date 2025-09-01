@@ -1,6 +1,8 @@
 # tasks/main.yml
 ---
-# Safe deploy with validation + rollback
+# ==============================================================================
+# Deploy network interfaces safely
+# ==============================================================================
 - name: Safely deploy /etc/network/interfaces
   become: true
   block:
