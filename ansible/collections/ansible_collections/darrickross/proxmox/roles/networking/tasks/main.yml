@@ -1,18 +1,51 @@
 ---
-- name: Deploy /etc/network/interfaces from template
+# Safe deploy with validation + rollback
+- name: Safely deploy /etc/network/interfaces
   become: true
-  ansible.builtin.template:
-    src: interfaces.j2
-    dest: "{{ networking_interfaces_dest }}"
-    owner: root
-    group: root
-    mode: "0644"
-  notify:
-    - Restart networking
-    - Ping primary gateway
-    - Ping p2p
-    - Ping primary gateway with MTU
-    - Ping p2p with MTU
+  block:
+    - name: Render validated config (no install if invalid)
+      ansible.builtin.template:
+        src: interfaces.j2
+        dest: "{{ networking_interfaces_dest }}"
+        owner: root
+        group: root
+        mode: "0644"
+        backup: true
+        # Either of these works; pick what exists on your host
+        # validate: "sh -c 'ifquery --interfaces=%s --check'"
+        validate: "sh -c 'ifup -n -a -i %s'"
+      register: interfaces_template
+      notify:
+        - Reload networking
+        - Ping primary gateway
+        - Ping p2p
+        - Ping primary gateway with MTU
+        - Ping p2p with MTU
+
+  rescue:
+    - name: Restore last known good interfaces if we changed it
+      when: interfaces_template.backup_file is defined
+      become: true
+      ansible.builtin.copy:
+        src: "{{ interfaces_template.backup_file }}"
+        dest: "{{ networking_interfaces_dest }}"
+        remote_src: true
+        owner: root
+        group: root
+        mode: "0644"
+
+    - name: Try to revert networking state
+      become: true
+      ansible.builtin.command:
+        cmd: ifreload -a
+      register: revert_networking
+      changed_when: revert_networking.rc == 0 and "no changes needed" not in revert_networking.stdout
+      failed_when: revert_networking.rc != 0 and "no changes needed" not in revert_networking.stdout
+
+    - name: Fail loudly
+      ansible.builtin.fail:
+        msg: "Invalid or unsafe interfaces config. Restored previous file."
+
 
 - name: Ensure Peer Host Block in /etc/hosts
   when:

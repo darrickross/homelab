@@ -1,9 +1,11 @@
 ---
-- name: Restart networking
+# Handler: safer than a hard restart on Proxmox/ifupdown2
+- name: Reload networking with ifreload
+  listen: Reload networking
   become: true
-  ansible.builtin.service:
-    name: networking
-    state: restarted
+  ansible.builtin.command:
+    cmd: ifreload -a
+  changed_when: false
 
 - name: Ping primary gateway
   ansible.builtin.command:
