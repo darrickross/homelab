@@ -49,6 +49,10 @@
       ansible.builtin.import_role:
         name: darrickross.proxmox.enable_opensource_repos
 
+    - name: Set up unattended upgrades
+      ansible.builtin.import_role:
+        name: darrickross.proxmox.unattended_upgrades
+
     - name: Ensure Proxmox Version
       ansible.builtin.import_role:
         name: darrickross.proxmox.system_upgrade
@@ -60,7 +64,3 @@
     - name: Set up Proxmox 443 Proxy using nginx
       ansible.builtin.import_role:
         name: darrickross.proxmox.nginx_proxy
-
-    - name: Set up unattended upgrades
-      ansible.builtin.import_role:
-        name: darrickross.proxmox.unattended_upgrades

@@ -1,7 +1,17 @@
 ---
+- name: Validate unattended-upgrades config (This can hang for ~90 seconds its normal)
+  listen: Validate unattended-upgrades config
+  ansible.builtin.command: unattended-upgrade -d --dry-run
+  register: uu_check
+  changed_when: false
+  failed_when: uu_check.rc != 0
+  notify: Restart unattended-upgrades
+
 - name: Restart unattended-upgrades
+  listen: Restart unattended-upgrades
   ansible.builtin.systemd:
     name: unattended-upgrades.service
     state: restarted
     enabled: true
+  when: uu_check is defined and uu_check.rc == 0
   failed_when: false
