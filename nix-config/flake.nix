@@ -26,25 +26,61 @@
       );
     in
     {
-      # One NixOS config per folder under ./hosts/<host>/default.nix
-      nixosConfigurations = lib.genAttrs hostNames (
-        host:
-        nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          modules = [ ./hosts/${host}/default.nix ];
-        }
-      );
+      # One NixOS config per user@host where user is the primaryUser
+      nixosConfigurations = lib.foldl' (
+        acc: host:
+        let
+          metaPath = ./. + "/hosts/${host}/meta.nix";
+          hostMeta =
+            if builtins.pathExists metaPath then
+              import metaPath
+            else
+              {
+                isGui = false;
+                autoLogin = false;
+              };
+        in
+        acc
+        // lib.genAttrs (map (u: "${u}@${host}") userNames) (
+          userAtHost:
+          let
+            user = builtins.head (lib.splitString "@" userAtHost);
+          in
+          nixpkgs.lib.nixosSystem {
+            system = "x86_64-linux";
+            specialArgs = {
+              inherit hostMeta;
+              primaryUser = user;
+              inherit lib;
+            };
+            modules = [ ./hosts/${host}/default.nix ];
+          }
+        )
+      ) { } hostNames;
 
       # One Home-Manger config per user *per host* (cross-product), like user@host
       # Generate a mapping of user's home to "user@host" to figure out what user is associated with it
       homeConfigurations = lib.foldl' (
         acc: host:
+        let
+          metaPath = ./. + "/hosts/${host}/meta.nix";
+          hostMeta = if builtins.pathExists metaPath then import metaPath else { isGui = false; };
+          guiEnable = hostMeta.isGui or false;
+        in
         acc
         // lib.genAttrs (map (u: "${u}@${host}") userNames) (
-          user:
+          userAtHost:
+          let
+            user = builtins.head (lib.splitString "@" userAtHost);
+          in
           home-manager.lib.homeManagerConfiguration {
             inherit pkgs;
-            modules = [ ./homes/${builtins.head (lib.splitString "@" user)}/home.nix ];
+            modules = [
+              ./homes/${user}/home.nix
+              # Include the user's GUI module only when true
+              (lib.mkIf guiEnable ./homes/${user}/gui.nix)
+            ];
+            extraSpecialArgs = { inherit hostMeta; };
           }
         )
       ) { } hostNames;
