@@ -53,7 +53,24 @@
               primaryUser = user;
               inherit lib;
             };
-            modules = [ ./hosts/${host}/default.nix ];
+            modules = [
+              ./hosts/${host}/default.nix
+
+              home-manager.nixosModules.home-manager
+
+              ({
+                home-manager.useGlobalPkgs = true;
+                home-manager.useUserPackages = true;
+
+                home-manager.users.${user} = {
+                  imports = [
+                    ./homes/${user}/home.nix
+                    (lib.mkIf (hostMeta.isGui or false) ./homes/${user}/gui.nix)
+                  ];
+                  extraSpecialArgs = { inherit hostMeta lib; };
+                };
+              })
+            ];
           }
         )
       ) { } hostNames;
