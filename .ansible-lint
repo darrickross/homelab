@@ -1,3 +1,2 @@
-yaml:
-  line-length:
-    max: 200
+skip_list:
+  - galaxy[no-changelog]

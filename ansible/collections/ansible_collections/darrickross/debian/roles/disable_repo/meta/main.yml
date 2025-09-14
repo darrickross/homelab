@@ -1,0 +1,17 @@
+---
+galaxy_info:
+  author: darrickross
+  description: Disable a select APT repository
+  license: MIT
+
+  min_ansible_version: "2.9"
+
+  role_name: disable_repo
+  namespace: darrickross
+
+  platforms:
+    - name: Debian
+      versions:
+        - bookworm # Debian 12 / Proxmox VE 8
+
+dependencies: []

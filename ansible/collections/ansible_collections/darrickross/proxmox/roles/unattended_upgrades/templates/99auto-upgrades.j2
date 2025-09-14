@@ -1,0 +1,6 @@
+// Managed by Ansible
+
+APT::Periodic::Update-Package-Lists "{{ unattended_upgrades_apt_periodic_download }}";
+APT::Periodic::Download-Upgradeable-Packages "{{ unattended_upgrades_apt_periodic_download }}";
+APT::Periodic::AutocleanInterval "{{ unattended_upgrades_apt_periodic_autoclean_interval }}";
+APT::Periodic::Unattended-Upgrade "{{ unattended_upgrades_apt_periodic_unattended_upgrade }}";

@@ -1,0 +1,40 @@
+---
+unattended_upgrades_proxmox_packages:
+  - unattended-upgrades
+  - apt-listchanges
+
+# Only Debian security by default. Add "-updates" if you want.
+unattended_upgrades_allowed_origins_patterns:
+  - 'o=${distro_id},n=${distro_codename}-security,l=${distro_id}-Security'
+
+# Keep Proxmox stack pinned out of auto-upgrade
+unattended_upgrades_package_blacklist_patterns:
+  - 'proxmox-ve'
+  - 'pve-kernel*'
+  - 'pve-manager'
+  - 'qemu-server'
+  - 'lxc-pve'
+  - 'libpve-*'
+  - 'zfs*'
+
+# Email settings
+unattended_upgrades_mail: ""
+unattended_upgrades_mail_only_on_error: true
+
+# Reboot settings
+unattended_upgrades_automatic_reboot: true
+unattended_upgrades_automatic_reboot_with_users: true
+unattended_upgrades_automatic_reboot_time: "03:30"
+
+# Clean up dependencies settings
+unattended_upgrades_remove_unused_deps: true
+unattended_upgrades_remove_new_unused_deps: true
+
+unattended_upgrades_minimal_steps: true
+
+unattended_upgrades_dev_release: 'false'
+
+# APT Periodic (runs via systemd timers)
+unattended_upgrades_apt_periodic_download: 1
+unattended_upgrades_apt_periodic_autoclean_interval: 7
+unattended_upgrades_apt_periodic_unattended_upgrade: 1

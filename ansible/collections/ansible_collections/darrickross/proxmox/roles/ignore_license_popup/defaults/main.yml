@@ -1,0 +1,9 @@
+---
+# path to the JS file you want to patch
+ignore_license_popup_pve_js_path: /usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js
+
+# backup extension
+ignore_license_popup_pve_js_backup_ext: ".orig.bak"
+
+# Comment for lines changed
+ignore_license_popup_proxmox_patch_tag: "// ansible role: darrickross.proxmox.ignore_license_popup"

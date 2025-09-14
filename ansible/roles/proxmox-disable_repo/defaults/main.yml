@@ -1,3 +1,0 @@
----
-# Directory where apt sources live
-pve_apt_sources_dir: "/etc/apt/sources.list.d"

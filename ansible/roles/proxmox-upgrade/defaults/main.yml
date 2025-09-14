@@ -1,3 +1,0 @@
----
-# the version you want -- override at playbook-level if desired
-desired_pve_version: "8.4.1"

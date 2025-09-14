@@ -1,0 +1,17 @@
+---
+galaxy_info:
+  author: darrickross
+  description: Apply an update to grub to fix removable mountpoint
+  license: MIT
+
+  min_ansible_version: "2.9"
+
+  role_name: grub_update_removable
+  namespace: darrickross
+
+  platforms:
+    - name: Debian
+      versions:
+        - bookworm # Debian 12 / Proxmox VE 8
+
+dependencies: []

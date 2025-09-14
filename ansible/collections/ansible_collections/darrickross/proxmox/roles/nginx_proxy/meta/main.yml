@@ -1,0 +1,17 @@
+---
+galaxy_info:
+  author: darrickross
+  description: Create an nginx proxy to forward :443 to the default Proxmox HTTPS endpoint :8006
+  license: MIT
+
+  min_ansible_version: "2.9"
+
+  namespace: darrickross
+
+  platforms:
+    - name: Debian
+      versions:
+        - bookworm # Debian 12 / Proxmox VE 8
+
+dependencies:
+  - enable_opensource_repos

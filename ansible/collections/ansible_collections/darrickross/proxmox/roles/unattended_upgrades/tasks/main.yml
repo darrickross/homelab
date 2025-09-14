@@ -1,0 +1,79 @@
+---
+- name: Ensure required packages
+  ansible.builtin.apt:
+    name: "{{ unattended_upgrades_proxmox_packages }}"
+    state: present
+    update_cache: true
+  when: ansible_facts.os_family == "Debian"
+
+- name: Deploy 99unattended-upgrades (with backup plan)
+  block:
+    - name: Deploy 99unattended-upgrades template
+      ansible.builtin.template:
+        src: 99unattended-upgrades.j2
+        dest: /etc/apt/apt.conf.d/99unattended-upgrades
+        owner: root
+        group: root
+        mode: '0644'
+        backup: true
+      register: uu_tpl
+      notify: Validate unattended-upgrades config
+
+    # run the validation handler now so we can catch failure here
+    - name: Flush handlers
+      ansible.builtin.meta: flush_handlers
+
+  rescue:
+    - name: Restore previous 99unattended-upgrades after failed validation
+      ansible.builtin.copy:
+        src: "{{ uu_tpl.backup_file }}"
+        dest: /etc/apt/apt.conf.d/99unattended-upgrades
+        owner: root
+        group: root
+        mode: '0644'
+        remote_src: true
+      when: uu_tpl is defined and uu_tpl.backup_file is defined
+
+    - name: Restart service to load restored config
+      ansible.builtin.systemd:
+        name: unattended-upgrades.service
+        state: restarted
+        enabled: true
+      failed_when: false
+
+    - name: Fail play after rollback
+      ansible.builtin.fail:
+        msg: "Validation failed. Restored {{ uu_tpl.backup_file | default('previous file') }}."
+
+
+- name: Deploy /etc/apt/apt.conf.d/99auto-upgrades
+  ansible.builtin.template:
+    src: 99auto-upgrades.j2
+    dest: /etc/apt/apt.conf.d/99auto-upgrades
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart unattended-upgrades
+
+- name: Enable unattended-upgrades timer if present
+  ansible.builtin.systemd:
+    name: unattended-upgrades.timer
+    enabled: true
+    state: started
+  register: uu_timer
+  failed_when: false
+
+- name: Enable apt-daily-upgrade timer if present
+  ansible.builtin.systemd:
+    name: apt-daily-upgrade.timer
+    enabled: true
+    state: started
+  register: adu_timer
+  failed_when: false
+
+- name: Show timers status (debug only when present)
+  ansible.builtin.debug:
+    msg:
+      - "unattended-upgrades.timer: {{ uu_timer is defined and (uu_timer.status | default({})).ActiveState | default('unknown') }}"
+      - "apt-daily-upgrade.timer: {{ adu_timer is defined and (adu_timer.status | default({})).ActiveState | default('unknown') }}"
+  when: uu_timer is defined or adu_timer is defined
