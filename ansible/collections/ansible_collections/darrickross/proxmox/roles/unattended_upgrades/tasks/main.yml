@@ -6,14 +6,45 @@
     update_cache: true
   when: ansible_facts.os_family == "Debian"
 
-- name: Deploy /etc/apt/apt.conf.d/99unattended-upgrades
-  ansible.builtin.template:
-    src: 99unattended-upgrades.j2
-    dest: /etc/apt/apt.conf.d/99unattended-upgrades
-    owner: root
-    group: root
-    mode: '0644'
-  notify: Restart unattended-upgrades
+- name: Deploy 99unattended-upgrades (with backup plan)
+  block:
+    - name: Deploy 99unattended-upgrades template
+      ansible.builtin.template:
+        src: 99unattended-upgrades.j2
+        dest: /etc/apt/apt.conf.d/99unattended-upgrades
+        owner: root
+        group: root
+        mode: '0644'
+        backup: true
+      register: uu_tpl
+      notify: Validate unattended-upgrades config
+
+    # run the validation handler now so we can catch failure here
+    - name: Flush handlers
+      ansible.builtin.meta: flush_handlers
+
+  rescue:
+    - name: Restore previous 99unattended-upgrades after failed validation
+      ansible.builtin.copy:
+        src: "{{ uu_tpl.backup_file }}"
+        dest: /etc/apt/apt.conf.d/99unattended-upgrades
+        owner: root
+        group: root
+        mode: '0644'
+        remote_src: true
+      when: uu_tpl is defined and uu_tpl.backup_file is defined
+
+    - name: Restart service to load restored config
+      ansible.builtin.systemd:
+        name: unattended-upgrades.service
+        state: restarted
+        enabled: true
+      failed_when: false
+
+    - name: Fail play after rollback
+      ansible.builtin.fail:
+        msg: "Validation failed. Restored {{ uu_tpl.backup_file | default('previous file') }}."
+
 
 - name: Deploy /etc/apt/apt.conf.d/99auto-upgrades
   ansible.builtin.template:
@@ -46,29 +77,3 @@
       - "unattended-upgrades.timer: {{ uu_timer is defined and (uu_timer.status | default({})).ActiveState | default('unknown') }}"
       - "apt-daily-upgrade.timer: {{ adu_timer is defined and (adu_timer.status | default({})).ActiveState | default('unknown') }}"
   when: uu_timer is defined or adu_timer is defined
-
-- name: Dry-run unattended-upgrade (This can hang for ~90 seconds its normal)
-  ansible.builtin.command: unattended-upgrade -d --dry-run
-  register: uu_dry
-  changed_when: false
-  failed_when: false  # evaluate in next task
-
-- name: Assert dry run is clean
-  ansible.builtin.assert:
-    that:
-      - uu_dry.rc == 0
-      - "'An error occurred' not in uu_dry.stdout"
-      - "'Traceback' not in uu_dry.stdout"
-      - "'ValueError' not in uu_dry.stdout"
-      - "'Exception' not in uu_dry.stdout"
-      - "'An error occurred' not in uu_dry.stderr"
-      - "'Traceback' not in uu_dry.stderr"
-      - "'ValueError' not in uu_dry.stderr"
-      - "'Exception' not in uu_dry.stderr"
-    fail_msg: |
-      unattended-upgrade dry-run failed or logged errors.
-      rc={{ uu_dry.rc }}
-      --- stdout ---
-      {{ uu_dry.stdout }}
-      --- stderr ---
-      {{ uu_dry.stderr }}

@@ -1,4 +1,22 @@
 ---
+# This task is used to initially generate SSH Multiplex connections for each host,
+# but serialized.
+#
+# I use a Yubikey as my SSH key, and it can only handle 1 auth request at a time
+# Without this the auth will fail immediately for the second thread to request
+# the ssh connection.
+#
+# So this task "warms up" the ssh multiplex connections that future tasks will
+# take advantage of. Allowing future connections to be parallel.
+- name: Warm up SSH Multiplex connections
+  hosts: hypervisors_proxmox
+  gather_facts: false
+  serial: 1
+  tasks:
+    - name: Wait for SSH connection
+      ansible.builtin.wait_for_connection:
+        timeout: 90
+
 - name: Configure general Proxmox hypervisors
   hosts: hypervisors_proxmox
   become: true
@@ -31,6 +49,10 @@
       ansible.builtin.import_role:
         name: darrickross.proxmox.enable_opensource_repos
 
+    - name: Set up unattended upgrades
+      ansible.builtin.import_role:
+        name: darrickross.proxmox.unattended_upgrades
+
     - name: Ensure Proxmox Version
       ansible.builtin.import_role:
         name: darrickross.proxmox.system_upgrade
@@ -42,7 +64,3 @@
     - name: Set up Proxmox 443 Proxy using nginx
       ansible.builtin.import_role:
         name: darrickross.proxmox.nginx_proxy
-
-    - name: Set up unattended upgrades
-      ansible.builtin.import_role:
-        name: darrickross.proxmox.unattended_upgrades
