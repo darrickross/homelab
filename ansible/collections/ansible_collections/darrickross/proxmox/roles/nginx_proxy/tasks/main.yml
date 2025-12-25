@@ -18,24 +18,71 @@
     enabled: true
   notify: Restart nginx
 
+# Replace your deploy+enable+handler flow with this safe block
+- name: Safely deploy and activate nginx site
+  block:
+    - name: Template site config (with backup)
+      ansible.builtin.template:
+        src: proxmox.conf.j2
+        dest: "{{ nginx_proxy_site_available_conf }}"
+        owner: root
+        group: root
+        mode: "0644"
+        backup: true
+      register: tpl
+
+    - name: Enable site
+      ansible.builtin.file:
+        src: "{{ nginx_proxy_site_available_conf }}"
+        dest: "{{ nginx_proxy_site_enabled_conf }}"
+        state: link
+
+    - name: Test nginx config
+      ansible.builtin.command: nginx -t
+      register: nginx_test
+      changed_when: false
+
+    - name: Reload nginx (only if test passed)
+      ansible.builtin.service:
+        name: nginx
+        state: reloaded
+      when: nginx_test.rc == 0
+
+  rescue:
+    - name: Restore previous config if backup exists
+      when: tpl is defined and tpl.backup_file is defined
+      ansible.builtin.copy:
+        src: "{{ tpl.backup_file }}"
+        dest: "{{ nginx_proxy_site_available_conf }}"
+        owner: root
+        group: root
+        mode: "0644"
+        remote_src: true
+
+    # If this was a first-time deploy and test failed, optionally disable the site:
+    - name: Disable site (first-time failure)
+      ansible.builtin.file:
+        path: "{{ nginx_proxy_site_enabled_conf }}"
+        state: absent
+
+    - name: Re-test last known good config
+      ansible.builtin.command: nginx -t
+      register: nginx_retest
+      changed_when: false
+
+    - name: Reload nginx (rollback)
+      ansible.builtin.service:
+        name: nginx
+        state: reloaded
+      when: nginx_retest.rc == 0
+
+  always:
+    - name: Show test output
+      ansible.builtin.debug:
+        msg: "{{ (nginx_test.stderr | default('no initial test')) }}"
+
 - name: Remove default site
   ansible.builtin.file:
     path: /etc/nginx/sites-enabled/default
     state: absent
-  notify: Restart nginx
-
-- name: Deploy Proxmox reverse-proxy config
-  ansible.builtin.template:
-    src: proxmox.conf.j2
-    dest: "{{ nginx_proxy_site_available_conf }}"
-    owner: root
-    group: root
-    mode: "0644"
-  notify: Restart nginx
-
-- name: Enable Proxmox site
-  ansible.builtin.file:
-    src: "{{ nginx_proxy_site_available_conf }}"
-    dest: "{{ nginx_proxy_site_enabled_conf }}"
-    state: link
   notify: Restart nginx
