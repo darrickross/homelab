@@ -18,7 +18,6 @@
     enabled: true
   notify: Restart nginx
 
-# Replace your deploy+enable+handler flow with this safe block
 - name: Safely deploy and activate nginx site
   block:
     - name: Template site config (with backup)
