@@ -18,6 +18,10 @@
     enabled: true
   notify: Restart nginx
 
+# ================================================================================
+# Configure Nginx
+# ================================================================================
+
 - name: Safely deploy and activate nginx site
   block:
     - name: Template site config (with backup)
