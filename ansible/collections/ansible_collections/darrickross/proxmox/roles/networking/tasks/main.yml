@@ -73,7 +73,7 @@
           - ping
           - -c
           - "{{ networking_ping_count }}"
-          - "{{ p2p0_peer_address }}"
+          - "{{ networking_p2p0_peer_address }}"
       register: ping_p2p_normal
       changed_when: false
       failed_when: false
@@ -110,7 +110,7 @@
           # Payload size
           - -s
           - "{{ networking_ping_payload_size }}"
-          - "{{ p2p0_peer_address }}"
+          - "{{ networking_p2p0_peer_address }}"
       register: ping_p2p0_mtu
       changed_when: false
       failed_when: false
