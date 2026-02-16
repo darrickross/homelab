@@ -16,7 +16,76 @@
     name: nginx
     state: started
     enabled: true
-  notify: Restart nginx
+
+# ================================================================================
+# Define Systemd monitors
+# Monitors to make sure nginx waits for the cert its using to become available
+# ================================================================================
+
+- name: Create systemd override directory for nginx
+  ansible.builtin.file:
+    path: /etc/systemd/system/nginx.service.d
+    state: directory
+    mode: "0755"
+    owner: root
+    group: root
+
+- name: Create systemd unit to monitor certificates paths
+  ansible.builtin.copy:
+    dest: /etc/systemd/system/proxmox-certs.path
+    content: |
+      [Unit]
+      Description=Monitor Proxmox SSL certificates
+
+      [Path]
+      PathExists={{ nginx_proxy_ssl_certificate }}
+      PathExists={{ nginx_proxy_ssl_certificate_key }}
+      Unit=proxmox-certs.service
+
+      [Install]
+      WantedBy=multi-user.target
+    mode: "0644"
+  notify: Reload systemd
+
+- name: Create systemd target for certificate readiness
+  ansible.builtin.copy:
+    dest: /etc/systemd/system/proxmox-certs.service
+    content: |
+      [Unit]
+      Description=Proxmox SSL certificates are ready
+      Requires=proxmox-certs.path
+      After=pveproxy.service
+
+      [Service]
+      Type=oneshot
+      RemainAfterExit=yes
+      ExecStart=/bin/true
+    mode: "0644"
+  notify: Reload systemd
+
+- name: Configure nginx to depend on certificates
+  ansible.builtin.copy:
+    dest: /etc/systemd/system/nginx.service.d/wait-for-certs.conf
+    content: |
+      [Unit]
+      After=proxmox-certs.service pveproxy.service
+      Wants=proxmox-certs.service
+
+      [Service]
+      TimeoutStartSec=30
+      ExecStartPre=/bin/bash -c 'while [ ! -f {{ nginx_proxy_ssl_certificate }} ] || [ ! -f {{ nginx_proxy_ssl_certificate_key }} ]; do sleep 1; done'
+      ExecStartPre=/bin/bash -c 'openssl x509 -in {{ nginx_proxy_ssl_certificate }} -noout'
+    mode: "0644"
+  notify: Reload systemd
+
+- name: Flush handlers before enabling systemd units
+  ansible.builtin.meta: flush_handlers
+
+- name: Enable proxmox-certs.path
+  ansible.builtin.systemd:
+    name: proxmox-certs.path
+    enabled: true
+    state: started
 
 # ================================================================================
 # Configure Nginx

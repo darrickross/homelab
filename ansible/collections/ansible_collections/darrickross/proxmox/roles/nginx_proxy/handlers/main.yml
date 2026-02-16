@@ -11,3 +11,8 @@
   ansible.builtin.service:
     name: nginx
     state: reloaded
+
+- name: Reload systemd
+  listen: Reload systemd
+  ansible.builtin.systemd:
+    daemon_reload: true
