@@ -1,0 +1,123 @@
+---
+# ==============================================================================
+# manage_token.yml — API token lifecycle management
+#
+# IMPORTANT: pveum user token add outputs the token secret ONLY ONCE at
+# creation time. The secret is captured into terraform_token_secret and
+# passed to store_bitwarden.yml. It is never logged (no_log: true).
+#
+# Idempotency: Checks if the token already exists before generating.
+# Force-recreate: Set terraform_user_force_recreate_token=true to delete
+#   and regenerate the token (e.g. for secret rotation).
+# ==============================================================================
+
+- name: Set full token identifier fact
+  ansible.builtin.set_fact:
+    terraform_user_full_token_id: "{{ terraform_user_pve_userid }}!{{ terraform_user_pve_token_id }}"
+
+- name: List existing API tokens for PVE user
+  ansible.builtin.command:
+    argv:
+      - pveum
+      - user
+      - token
+      - list
+      - "{{ terraform_user_pve_userid }}"
+      - --output-format
+      - json
+  register: terraform_token_list_raw
+  changed_when: false
+
+- name: Parse token list
+  ansible.builtin.set_fact:
+    terraform_token_list_parsed: "{{ terraform_token_list_raw.stdout | from_json }}"
+
+- name: Determine if API token already exists
+  ansible.builtin.set_fact:
+    terraform_token_exists: >-
+      {{
+        terraform_token_list_parsed
+        | selectattr('tokenid', 'equalto', terraform_user_pve_token_id)
+        | list
+        | length > 0
+      }}
+
+- name: Remove existing token (force recreate requested)
+  ansible.builtin.command:
+    argv:
+      - pveum
+      - user
+      - token
+      - remove
+      - "{{ terraform_user_pve_userid }}"
+      - "{{ terraform_user_pve_token_id }}"
+  when:
+    - terraform_user_force_recreate_token | bool
+    - terraform_token_exists
+  register: terraform_token_removed
+
+- name: Update token-exists fact after forced removal
+  ansible.builtin.set_fact:
+    terraform_token_exists: false
+  when:
+    - terraform_token_removed is defined
+    - terraform_token_removed is not skipped
+    - terraform_token_removed.rc is defined
+    - terraform_token_removed.rc == 0
+
+# CRITICAL: The token secret is only shown once at creation time.
+# no_log: true prevents it from appearing in any Ansible output or logs.
+- name: Generate new API token
+  ansible.builtin.command:
+    argv:
+      - pveum
+      - user
+      - token
+      - add
+      - "{{ terraform_user_pve_userid }}"
+      - "{{ terraform_user_pve_token_id }}"
+      - --comment
+      - "{{ terraform_user_pve_token_comment }}"
+      - --privsep
+      - "{{ '1' if terraform_user_pve_token_privsep else '0' }}"
+      - --output-format
+      - json
+  register: terraform_token_add_raw
+  when: not terraform_token_exists
+  no_log: true
+
+# pveum user token add JSON output format:
+# {
+#   "full-tokenid": "terraform@pve!terraform-ansible",
+#   "info": { "comment": "...", "privsep": 0 },
+#   "value": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+# }
+- name: Parse token creation output
+  ansible.builtin.set_fact:
+    terraform_token_secret: "{{ (terraform_token_add_raw.stdout | from_json).value }}"
+    terraform_token_full_id: "{{ (terraform_token_add_raw.stdout | from_json)['full-tokenid'] }}"
+  when:
+    - not terraform_token_exists
+    - terraform_token_add_raw is not skipped
+    - terraform_token_add_raw.stdout is defined
+  no_log: true
+
+- name: Confirm token was generated successfully
+  ansible.builtin.debug:
+    msg: >-
+      API token '{{ terraform_token_full_id }}' was generated successfully.
+      The secret will be stored in Bitwarden as '{{ terraform_user_bitwarden_item_name }}'.
+  when:
+    - terraform_token_secret is defined
+    - not terraform_token_exists
+
+- name: Inform operator when token already exists and was not regenerated
+  ansible.builtin.debug:
+    msg: >-
+      API token '{{ terraform_user_full_token_id }}' already exists — skipping generation.
+      The existing secret is NOT retrievable from Proxmox.
+      To regenerate: set terraform_user_force_recreate_token=true and re-run.
+      To retrieve from Bitwarden: bw get item '{{ terraform_user_bitwarden_item_name }}'
+  when:
+    - terraform_token_exists
+    - not (terraform_user_force_recreate_token | bool)

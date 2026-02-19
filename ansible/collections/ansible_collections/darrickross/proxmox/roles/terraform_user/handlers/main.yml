@@ -1,0 +1,4 @@
+---
+# No service handlers needed for this role.
+# All pveum operations take effect immediately without requiring
+# a service restart or reload.

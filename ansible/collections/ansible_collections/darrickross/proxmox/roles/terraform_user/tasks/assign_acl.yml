@@ -1,0 +1,57 @@
+---
+# ==============================================================================
+# assign_acl.yml — Idempotent ACL assignment
+#
+# Assigns TerraformRole to the terraform user at the configured PVE path.
+# Queries the existing ACL list and skips creation if an exact match on
+# ugid + roleid + path already exists.
+# ==============================================================================
+
+- name: List all existing PVE ACLs
+  ansible.builtin.command:
+    argv:
+      - pveum
+      - acl
+      - list
+      - --output-format
+      - json
+  register: terraform_acl_list_raw
+  changed_when: false
+
+- name: Parse PVE ACL list
+  ansible.builtin.set_fact:
+    terraform_acl_list_parsed: "{{ terraform_acl_list_raw.stdout | from_json }}"
+
+- name: Determine if ACL entry already exists
+  ansible.builtin.set_fact:
+    terraform_acl_exists: >-
+      {{
+        terraform_acl_list_parsed
+        | selectattr('ugid', 'equalto', terraform_user_pve_userid)
+        | selectattr('roleid', 'equalto', terraform_user_pve_role_id)
+        | selectattr('path', 'equalto', terraform_user_pve_acl_path)
+        | list
+        | length > 0
+      }}
+
+- name: Assign role to user via ACL
+  ansible.builtin.command:
+    argv:
+      - pveum
+      - acl
+      - modify
+      - "{{ terraform_user_pve_acl_path }}"
+      - --users
+      - "{{ terraform_user_pve_userid }}"
+      - --roles
+      - "{{ terraform_user_pve_role_id }}"
+      - --propagate
+      - "{{ '1' if terraform_user_pve_acl_propagate else '0' }}"
+  when: not terraform_acl_exists
+
+- name: Report ACL status
+  ansible.builtin.debug:
+    msg: >-
+      ACL assignment of '{{ terraform_user_pve_role_id }}' to '{{ terraform_user_pve_userid }}'
+      at path '{{ terraform_user_pve_acl_path }}'
+      {{ 'was created' if not terraform_acl_exists else 'already exists (no change)' }}.

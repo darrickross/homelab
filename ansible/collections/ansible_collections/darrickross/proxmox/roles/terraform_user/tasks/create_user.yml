@@ -1,0 +1,50 @@
+---
+# ==============================================================================
+# create_user.yml — Idempotent PVE user creation
+#
+# Queries the existing user list and creates the terraform PVE user only if
+# it does not already exist. pveum user add errors if the user exists, so the
+# pre-check guard is essential for idempotency.
+# ==============================================================================
+
+- name: List all existing PVE users
+  ansible.builtin.command:
+    argv:
+      - pveum
+      - user
+      - list
+      - --output-format
+      - json
+  register: terraform_user_list_raw
+  changed_when: false
+
+- name: Parse PVE user list
+  ansible.builtin.set_fact:
+    terraform_user_list_parsed: "{{ terraform_user_list_raw.stdout | from_json }}"
+
+- name: Determine if PVE user already exists
+  ansible.builtin.set_fact:
+    terraform_user_exists: >-
+      {{
+        terraform_user_list_parsed
+        | selectattr('userid', 'equalto', terraform_user_pve_userid)
+        | list
+        | length > 0
+      }}
+
+- name: Create PVE user
+  ansible.builtin.command:
+    argv:
+      - pveum
+      - user
+      - add
+      - "{{ terraform_user_pve_userid }}"
+      - --comment
+      - "{{ terraform_user_pve_user_comment }}"
+  when: not terraform_user_exists
+
+- name: Report user status
+  ansible.builtin.debug:
+    msg: >-
+      PVE user '{{ terraform_user_pve_userid }}'
+      {{ 'was created' if not terraform_user_exists else 'already exists (no change)' }}.
