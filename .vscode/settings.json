@@ -15,6 +15,7 @@
     "-noout",
     "-passin",
     "-pubkey",
+    "ABSLOG",
     "autoclean",
     "automagically",
     "autoremove",
@@ -83,8 +84,10 @@
     "pveversion",
     "qdisc",
     "qlen",
+    "Remappable",
     "resetup",
     "resholve",
+    "saveddirsuffix",
     "selectattr",
     "SIGABRT",
     "steamcmd",
@@ -116,6 +119,8 @@
     "editor.autoIndent": "advanced"
   },
   "[markdown]": {
+    "editor.detectIndentation": false,
+    "editor.insertSpaces": true,
     "editor.tabSize": 2,
     "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
   },
