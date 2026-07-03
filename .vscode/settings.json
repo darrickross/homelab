@@ -1,7 +1,7 @@
 {
   "ansible.lightspeed.enabled": false,
   "ansible.lightspeed.suggestions.enabled": false,
-  "ansible.python.interpreterPath": "/usr/bin/python3",
+  "ansible.python.interpreterPath": "/home/itsjustmech/.nix-profile/bin/python3",
   "cSpell.enabledFileTypes": {
     "nix": true
   },
