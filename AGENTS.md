@@ -18,7 +18,6 @@ for those systems.
 | `ansible/collections/`      | In-repo custom collections: `darrickross.proxmox` and `darrickross.debian`                 |
 | `game-server-satisfactory/` | Satisfactory dedicated server — `nix-configs/` (preferred) and `simple-ubuntu-configs/`    |
 | `docs/`                     | Guides: certificate management (Windows CA), NixOS notes, pihole, full command output logs |
-| `scripts/`                  | Helper scripts (e.g. `certificate-management/convert_pfx.sh`)                              |
 
 Two `ansible.cfg` files exist and both matter: the root one pins the inventory
 path (so `ansible-playbook ansible/site.yml` works from the repo root), and
