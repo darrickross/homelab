@@ -1,4 +1,15 @@
 ---
+# The key is served pre-dearmored (binary OpenPGP), so it can be dropped
+# straight into /usr/share/keyrings without piping through gpg
+- name: Download Proxmox VE GPG key to a dedicated keyring
+  ansible.builtin.get_url:
+    url: "{{ enable_opensource_repos_proxmox_gpg_key_url }}"
+    dest: "{{ enable_opensource_repos_proxmox_keyring_path }}"
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Refresh APT cache
+
 - name: Deploy Proxmox no-subscription repo
   ansible.builtin.template:
     src: opensource-pve.list.j2
@@ -16,8 +27,3 @@
     group: root
     mode: "0644"
   notify: Refresh APT cache
-
-- name: Import Proxmox VE GPG key
-  ansible.builtin.apt_key:
-    url: "{{ enable_opensource_repos_proxmox_gpg_key_url }}"
-    state: present

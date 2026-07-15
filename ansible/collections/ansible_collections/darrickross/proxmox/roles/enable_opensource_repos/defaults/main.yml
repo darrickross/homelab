@@ -7,3 +7,7 @@ enable_opensource_repos_pve_apt_codename: "{{ ansible_lsb.codename | default(ans
 
 # URL and component for the no-subscription repo
 enable_opensource_repos_proxmox_gpg_key_url: "https://enterprise.proxmox.com/debian/proxmox-release-{{ enable_opensource_repos_pve_apt_codename }}.gpg"
+
+# Dedicated keyring the repo entries are pinned to via [signed-by=...],
+# so the Proxmox key can only sign the Proxmox repos (not every repo on the system)
+enable_opensource_repos_proxmox_keyring_path: "/usr/share/keyrings/proxmox-release-{{ enable_opensource_repos_pve_apt_codename }}.gpg"
