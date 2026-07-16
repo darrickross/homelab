@@ -1,127 +1,31 @@
 {
-  "ansible.lightspeed.enabled": false,
-  "ansible.lightspeed.suggestions.enabled": false,
-  "ansible.python.interpreterPath": "/home/itsjustmech/.nix-profile/bin/python3",
-  "cSpell.enabledFileTypes": {
-    "nix": true
-  },
+  // Workspace level holds only conventions specific to this repo.
+  // Editor style + generic vocabulary live in User settings
+  // (dotfiles-windows repo); WSL machine paths (ansible/python
+  // interpreters, formatter binaries) live in
+  // ~/.vscode-server/data/Machine/settings.json (deployed by the
+  // dotfiles repo via home-manager).
   "cSpell.words": [
-    "-cacerts",
-    "-clcerts",
-    "-nocerts",
-    "-nocrypt",
-    "-noenc",
-    "-nokeys",
-    "-noout",
-    "-passin",
-    "-pubkey",
-    "autoclean",
-    "automagically",
-    "autoremove",
     "betapassword",
-    "blockinfile",
-    "bootable",
     "BOOTX",
     "certlm.msc",
     "certsrv.msc",
-    "checkconf",
-    "cliconf",
-    "cmds",
-    "codel",
-    "coreutils",
-    "dateext",
-    "dbus",
-    "debconf",
-    "delaycompress",
-    "distro",
-    "dpkg",
-    "drwxr",
     "DTLSHandlerComponent",
     "ECDH_P",
-    "endfor",
-    "execer",
     "FGDSIpNetDriver",
-    "findutils",
-    "gnugrep",
     "homelab",
     "HomeLab",
-    "httpapi",
-    "iface",
-    "ifquery",
-    "ifreload",
-    "ifup",
-    "inet",
-    "internationalisation",
-    "journalctl",
-    "keymap",
     "libpve",
-    "listchanges",
-    "Malloc",
-    "missingok",
-    "mountpoint",
-    "multihome",
-    "netconf",
-    "networkmanager",
-    "Nixos",
-    "nixpkgs",
-    "noprefixroute",
-    "noqueue",
-    "notifempty",
-    "opensource",
-    "patchelf",
     "pihole",
-    "pipefail",
-    "PKCS",
-    "pkcs12",
-    "pkcs8",
-    "pkgs",
-    "pointopoint",
-    "polkit",
-    "proto",
     "proxmoxlib",
     "pveproxy",
     "pveversion",
-    "qdisc",
-    "qlen",
-    "resetup",
-    "resholve",
-    "selectattr",
-    "SIGABRT",
     "steamcmd",
-    "sysinit",
-    "tmpfiles",
     "Valheim",
-    "vmbr",
-    "vtype",
-    "xrdp"
+    "vmbr"
   ],
   "files.associations": {
     "*plays.yml": "ansible",
     "*init.yml": "yaml"
-  },
-  "files.eol": "\n",
-  // Make sure to install nixfmt
-  // https://github.com/NixOS/nixfmt/releases
-  "nix.formatterPath": "nixfmt",
-  "[ansible]": {
-    "editor.defaultFormatter": "redhat.ansible",
-    "editor.detectIndentation": true,
-    "editor.insertSpaces": true,
-    "editor.tabSize": 2,
-    "editor.quickSuggestions": {
-      "comments": true,
-      "other": true,
-      "strings": true
-    },
-    "editor.autoIndent": "advanced"
-  },
-  "[markdown]": {
-    "editor.tabSize": 2,
-    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
-  },
-  "[nix]": {
-    "editor.insertSpaces": true,
-    "editor.tabSize": 2,
-    "editor.defaultFormatter": "jnoortheen.nix-ide"
   }
 }
