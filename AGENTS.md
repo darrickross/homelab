@@ -56,16 +56,22 @@ secrets machinery lives in the sibling `dotfiles` repo (see
 `../dotfiles/AGENTS.md`), which manages this machine via Nix Home Manager:
 
 - Application secrets live in **Bitwarden Secrets Manager (BWS)**, never on
-  disk and never in this repo. Usage pattern (once per shell):
-  `bws-load-local-machine-credential` to export `BWS_ACCESS_TOKEN` (decrypted
-  from a sops+age+YubiKey encrypted file), then `bws run -- <command>` to
-  inject secrets as env vars named after their BWS **Key**
-  (`SCREAMING_SNAKE_CASE`). List what's available with
-  `bws-check-available-secrets`.
+  disk and never in this repo. Anything that needs a secret is run as
+  `cbws-exec -- <command>` (e.g. `cbws-exec -- ansible-playbook site.yml`),
+  which injects each secret as an env var named after its BWS **Key**
+  (`SCREAMING_SNAKE_CASE`) for that process tree only. List what's available
+  with `cbws-list-available-secrets`; write with `cbws-secret-set <KEY>`
+  (value via stdin). Full guide: `~/.local/share/doc/cbws/secrets.md`
+  (source: `../dotfiles/docs/secrets.md`). Every command supports `--help`.
+- Never export `BWS_ACCESS_TOKEN` into a shell — the former
+  `bws-load-local-machine-credential` command was removed on purpose; the
+  token only ever exists inside a `cbws-exec` process tree. Direct `bws`
+  calls are not part of the workflow.
 - If a playbook or script here needs a secret, read it from an environment
-  variable and document that it's injected via `bws run -- ansible-playbook …`.
-  Never hardcode secret values, write them to tracked files, `/tmp`, or shell
-  rc files, and never echo them into logs/output.
+  variable and document that it's injected via
+  `cbws-exec -- ansible-playbook …`. Never hardcode secret values, write
+  them to tracked files, `/tmp`, or shell rc files, and never echo them
+  into logs/output.
 - SSH and GPG are YubiKey-backed through Windows-side wrappers (this is WSL2;
   the key is not passed through via USB). Expect touch/PIN prompts during
   ansible runs; don't "fix" auth by generating soft keys.
