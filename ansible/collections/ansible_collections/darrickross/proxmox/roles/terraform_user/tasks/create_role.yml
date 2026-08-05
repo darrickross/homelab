@@ -1,0 +1,63 @@
+---
+# ==============================================================================
+# create_role.yml — Idempotent PVE role creation and privilege sync
+#
+# Creates the TerraformRole if it does not exist, then syncs its privileges
+# on every run to ensure the role stays in sync with defaults/main.yml.
+# pveum role modify with --privs replaces the privilege list wholesale,
+# making it safe to re-run.
+# ==============================================================================
+
+- name: List all existing PVE roles
+  ansible.builtin.command:
+    argv:
+      - pveum
+      - role
+      - list
+      - --output-format
+      - json
+  register: terraform_role_list_raw
+  changed_when: false
+
+- name: Parse PVE role list
+  ansible.builtin.set_fact:
+    terraform_role_list_parsed: "{{ terraform_role_list_raw.stdout | from_json }}"
+
+- name: Determine if PVE role already exists
+  ansible.builtin.set_fact:
+    terraform_role_exists: >-
+      {{
+        terraform_role_list_parsed
+        | selectattr('roleid', 'equalto', terraform_user_pve_role_id)
+        | list
+        | length > 0
+      }}
+
+- name: Create PVE role with privileges
+  ansible.builtin.command:
+    argv:
+      - pveum
+      - role
+      - add
+      - "{{ terraform_user_pve_role_id }}"
+      - --privs
+      - "{{ terraform_user_pve_role_privs | join(',') }}"
+  when: not terraform_role_exists
+
+- name: Sync PVE role privileges (modify existing role)
+  ansible.builtin.command:
+    argv:
+      - pveum
+      - role
+      - modify
+      - "{{ terraform_user_pve_role_id }}"
+      - --privs
+      - "{{ terraform_user_pve_role_privs | join(',') }}"
+  when: terraform_role_exists
+
+- name: Report role status
+  ansible.builtin.debug:
+    msg: >-
+      PVE role '{{ terraform_user_pve_role_id }}'
+      {{ 'was created' if not terraform_role_exists else 'privileges synced' }}
+      with {{ terraform_user_pve_role_privs | length }} privileges.

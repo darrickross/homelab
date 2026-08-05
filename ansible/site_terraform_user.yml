@@ -1,0 +1,53 @@
+---
+# ==============================================================================
+# site_terraform_user.yml
+#
+# Configures a Terraform PVE user, custom role, ACL assignment, and API token
+# on Proxmox VE. Stores the generated API token secret in Bitwarden.
+#
+# Prerequisites:
+#   - BW_SESSION must be set in the environment (export BW_SESSION=$(bw unlock --raw))
+#   - Use ansible/scripts/setup_terraform_user.sh for a guided setup
+#
+# Usage:
+#   # Full run (all hypervisors — recommended only for standalone nodes):
+#   ansible-playbook site_terraform_user.yml
+#
+#   # Single-node run (recommended for Proxmox clusters — pve-cluster replicates):
+#   ansible-playbook site_terraform_user.yml -l hv00-pve.sol.mw
+#
+#   # Dry run:
+#   ansible-playbook site_terraform_user.yml --check --diff
+#
+#   # Force-regenerate the API token (secret rotation):
+#   ansible-playbook site_terraform_user.yml -e terraform_user_force_recreate_token=true
+#
+#   # Override token name or Bitwarden item name:
+#   ansible-playbook site_terraform_user.yml \
+#     -e terraform_user_pve_token_id=my-token \
+#     -e terraform_user_bitwarden_item_name="My Proxmox Token"
+# ==============================================================================
+
+# Phase 1: Warm up SSH multiplex connections.
+# Required for Yubikey hardware key authentication — the Yubikey can only
+# handle one authentication touch at a time (serial: 1).
+# Pattern mirrors site.yml.
+- name: Warm up SSH Multiplex connections
+  hosts: hypervisors_proxmox
+  gather_facts: false
+  serial: 1
+
+  tasks:
+    - name: Wait for SSH connection
+      ansible.builtin.wait_for_connection:
+        timeout: 90
+
+# Phase 2: Configure Terraform credentials on Proxmox.
+- name: Configure Terraform PVE user, role, ACL, and API token
+  hosts: hypervisors_proxmox
+  gather_facts: true
+
+  tasks:
+    - name: Apply terraform_user role
+      ansible.builtin.import_role:
+        name: darrickross.proxmox.terraform_user

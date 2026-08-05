@@ -1,0 +1,99 @@
+---
+# ==============================================================================
+# darrickross.proxmox.terraform_user — defaults
+# ==============================================================================
+
+# ==============================================================================
+# PVE User settings
+# ==============================================================================
+
+# The full PVE user ID in the form user@realm
+terraform_user_pve_userid: "terraform@pve"
+
+# Comment attached to the PVE user account
+terraform_user_pve_user_comment: "Managed by Ansible - darrickross.proxmox.terraform_user"
+
+# ==============================================================================
+# PVE Role settings
+# ==============================================================================
+
+# The name of the custom PVE role to create
+terraform_user_pve_role_id: "TerraformRole"
+
+# Minimal privilege set for the bpg/terraform-provider-proxmox provider.
+# Covers VM lifecycle, disk, network, cloud-init, snapshots, datastores,
+# pools, SDN attachment, and basic node audit access.
+# Intentionally excludes: Sys.PowerMgmt, User.Modify, SDN.Allocate.
+terraform_user_pve_role_privs:
+  - Datastore.Allocate
+  - Datastore.AllocateSpace
+  - Datastore.AllocateTemplate
+  - Datastore.Audit
+  - Pool.Allocate
+  - Pool.Audit
+  - SDN.Use
+  - Sys.Audit
+  - Sys.Console
+  - Sys.Modify
+  - VM.Allocate
+  - VM.Audit
+  - VM.Clone
+  - VM.Config.CDROM
+  - VM.Config.CPU
+  - VM.Config.Cloudinit
+  - VM.Config.Disk
+  - VM.Config.HWType
+  - VM.Config.Memory
+  - VM.Config.MixedRW
+  - VM.Config.Network
+  - VM.Config.Options
+  - VM.Console
+  - VM.Migrate
+  - VM.Monitor
+  - VM.PowerMgmt
+  - VM.Snapshot
+  - VM.Snapshot.Rollback
+
+# ==============================================================================
+# ACL settings
+# ==============================================================================
+
+# The PVE path at which the role is assigned to the user
+terraform_user_pve_acl_path: "/"
+
+# Whether to propagate permissions to child paths
+terraform_user_pve_acl_propagate: true
+
+# ==============================================================================
+# API Token settings
+# ==============================================================================
+
+# The token ID (short name — the full token is user@realm!tokenid)
+terraform_user_pve_token_id: "terraform-ansible"
+
+# Comment attached to the API token
+terraform_user_pve_token_comment: "Managed by Ansible - darrickross.proxmox.terraform_user"
+
+# Whether to enable privilege separation on the token.
+# false = token inherits all of the user's permissions (simpler for automation).
+# true = token has its own restricted privilege set (requires additional pveum acl for the token).
+terraform_user_pve_token_privsep: false
+
+# Set to true to force-delete and regenerate the token even if it already exists.
+# Use when the existing secret is lost or needs rotation.
+terraform_user_force_recreate_token: false
+
+# ==============================================================================
+# Bitwarden storage settings
+# ==============================================================================
+
+# Name of the Bitwarden item to create or update
+terraform_user_bitwarden_item_name: "Proxmox Terraform API Token"
+
+# Bitwarden folder path to store the item in.
+# Leave empty ("") to store in the vault root.
+terraform_user_bitwarden_folder_name: "Homelab/Proxmox"
+
+# Safety gate: fail early if BW_SESSION is not set in the environment.
+# Set to false only if you are handling Bitwarden auth externally.
+terraform_user_bw_session_required: true

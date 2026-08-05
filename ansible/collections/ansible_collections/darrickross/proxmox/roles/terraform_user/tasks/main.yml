@@ -1,0 +1,46 @@
+---
+# ==============================================================================
+# darrickross.proxmox.terraform_user
+#
+# Configures a dedicated Terraform PVE user, custom role, ACL assignment,
+# and API token on Proxmox VE. Stores the generated token secret in Bitwarden.
+#
+# Prerequisites:
+#   - BW_SESSION must be set in the environment on the Ansible controller
+#   - Use ansible/scripts/setup_terraform_user.sh for a guided setup
+#
+# Key variables (see defaults/main.yml for full list):
+#   terraform_user_pve_userid           (default: terraform@pve)
+#   terraform_user_pve_role_id          (default: TerraformRole)
+#   terraform_user_pve_token_id         (default: terraform-ansible)
+#   terraform_user_force_recreate_token (default: false)
+#   terraform_user_bitwarden_item_name  (default: Proxmox Terraform API Token)
+# ==============================================================================
+
+- name: Validate BW_SESSION is available on the Ansible controller
+  ansible.builtin.assert:
+    that:
+      - lookup('env', 'BW_SESSION') | length > 0
+    fail_msg: >
+      BW_SESSION environment variable is not set on the Ansible controller.
+      Run: export BW_SESSION=$(bw unlock --raw)
+      Or use the provided wrapper: ansible/scripts/setup_terraform_user.sh
+  delegate_to: localhost
+  run_once: true
+  when: terraform_user_bw_session_required | bool
+
+- name: Ensure PVE user exists
+  ansible.builtin.include_tasks: create_user.yml
+
+- name: Ensure PVE role exists with correct privileges
+  ansible.builtin.include_tasks: create_role.yml
+
+- name: Ensure ACL assignment exists
+  ansible.builtin.include_tasks: assign_acl.yml
+
+- name: Manage API token lifecycle
+  ansible.builtin.include_tasks: manage_token.yml
+
+- name: Store credentials in Bitwarden
+  ansible.builtin.include_tasks: store_bitwarden.yml
+  when: terraform_token_secret is defined and terraform_token_secret | length > 0
